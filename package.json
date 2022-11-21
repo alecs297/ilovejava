@@ -4,8 +4,8 @@
   "description": "Tailwind jit",
   "main": "index.js",
   "scripts": {
-    "buid:postcss": "NODE_ENV=production postcss src/main/resources/static/css/tailwind.css -o target/classes/static/css/style.css",
-    "watch:postcss": "NODE_ENV=production postcss src/main/resources/static/css/tailwind.css -o target/classes/static/css/style.css -w"
+    "buid:postcss": "NODE_ENV=production postcss src/main/resources/tailwind.css -o src/main/webapp/styles/style.css",
+    "watch:postcss": "NODE_ENV=production postcss src/main/resources/tailwind.css -o src/main/webapp/styles/style.css -w"
   },
   "repository": {
     "type": "git",

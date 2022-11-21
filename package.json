@@ -1,0 +1,26 @@
+{
+  "name": "ilovejava",
+  "version": "1.0.0",
+  "description": "Tailwind jit",
+  "main": "index.js",
+  "scripts": {
+    "buid:postcss": "NODE_ENV=production postcss src/main/resources/static/css/tailwind.css -o target/classes/static/css/style.css",
+    "watch:postcss": "NODE_ENV=production postcss src/main/resources/static/css/tailwind.css -o target/classes/static/css/style.css -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alecs297/ilovejava.git"
+  },
+  "author": "Longuet Maxime, Moldovan Alexandru, Rodrigues Samuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alecs297/ilovejava/issues"
+  },
+  "homepage": "https://github.com/alecs297/ilovejava#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.19",
+    "postcss-cli": "^10.0.0",
+    "tailwindcss": "^3.2.4"
+  }
+}

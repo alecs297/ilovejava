@@ -6,19 +6,20 @@
   - java/dev/palmes/ilovejava
     - controller : Controller class
     - models :  Data model descriptions
-  - ressources
+  - ressources : config files and other utils
   - webapp
-    - images
-    - styles
+    - static : static assets
     - WEB-INF
       - views : Data views
 
-Environment variables in `.env` are used to configure certain aspect of the project like mysql
+
 
 ### MySQL default configuration
 
-| Option         | value          |
-|----------------|----------------|
-| Database name  | `ilovejava`    |
-| MySQL User     | `ilovejava`    |
-| MySQL Password | `ilovejava123` |
+| Option         | value           |
+|----------------|-----------------|
+| Database name  | `ilovejava`     |
+| MySQL User     | `ilovejava`     |
+| MySQL Password | `Ilovejava123!` |
+
+You can change the mysql connection details in `src/main/java/resources/application.properties`

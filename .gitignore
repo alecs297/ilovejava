@@ -12,3 +12,4 @@ buildNumber.properties
 .idea
 node_modules
 package-lock.json
+/src/main/webapp/static/styles/style.css

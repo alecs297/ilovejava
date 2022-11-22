@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.0.0</version>
+            <version>5.3.24</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +50,12 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.24</version>
+        </dependency>
+
     </dependencies>
 
     <build>

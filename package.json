@@ -4,7 +4,7 @@
   "description": "Tailwind jit",
   "main": "index.js",
   "scripts": {
-    "buid:postcss": "postcss src/main/resources/tailwind.css -o src/main/webapp/static/styles/style.css",
+    "build:postcss": "postcss src/main/resources/tailwind.css -o src/main/webapp/static/styles/style.css",
     "watch:postcss": "postcss src/main/resources/tailwind.css -o src/main/webapp/static/styles/style.css -w"
   },
   "repository": {

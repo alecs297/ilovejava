@@ -1,9 +1,8 @@
-package dev.palmes.ilovejava.controllers;
+package dev.palmes.ilovejava.confs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,10 +11,10 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "java" })
-public class ApplicationController implements WebMvcConfigurer {
+@ComponentScan(basePackages = { "dev.palmes.ilovejava" })
+public class ApplicationMVCConfig implements WebMvcConfigurer {
     @Bean
-    public ViewResolver resolver() {
+    public InternalResourceViewResolver resolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setViewClass(JstlView.class);
         bean.setPrefix("/WEB-INF/views/");

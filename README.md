@@ -13,8 +13,7 @@
       - views : Data views
 
 
-
-### MySQL default configuration
+## MySQL default configuration
 
 | Option         | value           |
 |----------------|-----------------|
@@ -23,3 +22,18 @@
 | MySQL Password | `Ilovejava123!` |
 
 You can change the mysql connection details in `src/main/java/resources/application.properties`
+
+## Tailwind styles build
+
+`npm` is required for building the css files.
+
+to generate the `style.css` file, install dependencies with
+```shell
+npm i
+```
+
+then launch the css script building script
+
+```shell
+npm run build:postcss
+```

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
 <html>
-    <jsp:include page="../../WEB-INF/includes/head.jsp" />
+    <head>
+        <title>Hello</title>
+    </head>
 </html>

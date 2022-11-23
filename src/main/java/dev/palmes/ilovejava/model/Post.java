@@ -23,6 +23,9 @@ public class Post {
     @ManyToOne
     private Post parent;
 
+    @ManyToOne
+    private Thread thread;
+
     public UUID getId() {
         return id;
     }
@@ -71,4 +74,11 @@ public class Post {
         this.creationDate = creationDate;
     }
 
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
 }

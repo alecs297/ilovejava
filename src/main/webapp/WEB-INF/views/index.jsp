@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Hello</title>
-    </head>
+    <jsp:include page="/WEB-INF/includes/head.jsp"/>
+    <body>
+        <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
+    </body>
+
 </html>

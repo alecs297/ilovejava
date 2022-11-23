@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional
@@ -17,7 +18,7 @@ public class UserDaoImp implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public Optional<User> get(int id) {
+    public Optional<User> get(UUID id) {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(User.class, id));
     }
 

@@ -24,7 +24,7 @@ public class ThreadDaoImp implements ThreadDao {
 
 
     @Override
-    public Optional<Thread> get(int id) {
+    public Optional<Thread> get(UUID id) {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(Thread.class, id));
     }
 

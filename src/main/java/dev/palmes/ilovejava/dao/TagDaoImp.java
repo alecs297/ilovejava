@@ -17,7 +17,7 @@ public class TagDaoImp implements TagDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public Optional<Tag> get(int id) {
+    public Optional<Tag> get(String id) {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(Tag.class, id));
     }
 

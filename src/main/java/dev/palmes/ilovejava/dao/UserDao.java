@@ -10,6 +10,7 @@ public interface UserDao extends Dao<User> {
 
     Optional<User> get(UUID id);
     User findByUsername(String username);
+    User findByEmail(String email);
     List<User> listByRecent();
     List<User> listByPopular();
 }

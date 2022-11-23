@@ -1,4 +1,4 @@
-package dev.palmes.ilovejava.controllers;
+package dev.palmes.ilovejava.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

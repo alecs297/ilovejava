@@ -1,4 +1,4 @@
-package dev.palmes.ilovejava.models;
+package dev.palmes.ilovejava.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

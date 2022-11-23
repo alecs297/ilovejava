@@ -1,4 +1,4 @@
-package dev.palmes.ilovejava.confs;
+package dev.palmes.ilovejava.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

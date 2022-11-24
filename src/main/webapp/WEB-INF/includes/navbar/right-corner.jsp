@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="w-56 text-xl h-full align-bottom">
   <div class="block lg:hidden p-2 w-full h-full">
     <span id="navbar-toggle" class="inline w-fit h-full text-java-blue font-mono text-7xl cursor-pointer select-none float-right">
@@ -10,7 +11,16 @@
         <h2 class="text-6xl font-bold mb-12 cursor-default select-none">Navigation</h2>
         <jsp:include page="content.jsp" />
       </nav>
-      <jsp:include page="profile.jsp" />
+      <c:choose>
+        <c:when test="${empty user}">
+          <h2 class="text-6xl font-bold mb-12 cursor-default select-none">Account</h2>
+          <a class="text-5xl lg:text-xl block underline decoration-wavy decoration-java-blue underline-offset-8 rounded-lg px-0 lg:px-6 py-3 align-top" href="/login">Login</a>
+        </c:when>
+        <c:otherwise>
+          <jsp:include page="profile.jsp" />
+        </c:otherwise>
+      </c:choose>
+
     </div>
   </div>
 </div>

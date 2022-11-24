@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
@@ -23,7 +24,7 @@ public interface UserService {
      *
      * @param user The user to create
      */
-    void save(User user) throws AlreadyExistException;
+    void save(User user, String originalPassword) throws AlreadyExistException;
 
     /**
      * Update a user from the database, the user performing the
@@ -50,18 +51,16 @@ public interface UserService {
      *
      * @param username Username of the user to look for
      * @return The user
-     * @throws NotFoundException User doesn't exist
      */
-    User findByUsername(String username) throws NotFoundException;
+    Optional<User> findByUsername(String username);
 
     /**
      * Find a user by its email
      *
      * @param email Email of the user to look for
      * @return The user
-     * @throws NotFoundException User doesn't exist
      */
-    User findByEmail(String email) throws NotFoundException;
+    Optional<User> findByEmail(String email);
 
     /**
      * Get all users that exist sorted by recent

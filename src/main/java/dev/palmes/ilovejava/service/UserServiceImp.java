@@ -5,10 +5,15 @@ import dev.palmes.ilovejava.exceptions.AlreadyExistException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserServiceImp implements UserService {
     private final UserDao userDao;
 
@@ -16,18 +21,66 @@ public class UserServiceImp implements UserService {
         this.userDao = userDao;
     }
 
-    @Override
+    @Transactional
 
     public User get(UUID id) throws NotFoundException {
         return userDao.get(id).orElseThrow(NotFoundException::new);
     }
 
-    @Override
-    public void save(User user) throws AlreadyExistException {
+    @Transactional
+    public void save(User user, String originalPassword) throws AlreadyExistException {
+        if (userDao.findByUsername(user.getUsername()) != null) {
+            throw new AlreadyExistException("Username already exist");
+        }
+        if (!checkUsername(user.getUsername())) {
+            throw new AlreadyExistException("Username is not valid");
+        }
+        if (userDao.findByEmail(user.getEmail()) != null) {
+            throw new AlreadyExistException("Email already exist");
+        }
+        if (!checkEmail(user.getEmail())) {
+            throw new AlreadyExistException("Email is not valid");
+        }
+        if (!checkPassword(originalPassword)) {
+            throw new AlreadyExistException("Password is not valid");
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(originalPassword));
+
         userDao.save(user);
     }
 
-    @Override
+    /**
+     * Check if the username is valid
+     * Username is valid if it contains only letters and numbers and "_"
+     * and it's length is between 4 and 16
+     * @param username Username to check
+     * @return true if the username is valid
+     */
+    private boolean checkUsername(String username) {
+        return username != null &&  username.matches("^[a-zA-Z0-9_]{4,16}$");
+    }
+
+    /**
+     * Check if the email is valid
+     * @param email Email to check
+     * @return true if the email is valid
+     */
+    private boolean checkEmail(String email) {
+        return email != null &&  email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+    }
+
+    /**
+     * Check if the password is valid
+     * Password is valid if it has at least 8 characters, one uppercase, one lowercase
+     * one number and one special character
+     * @param password Password to check
+     * @return true if the password is valid
+     */
+    private boolean checkPassword(String password) {
+        return password != null &&  password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+    }
+
+    @Transactional
     public void delete(User user, User userRequesting) throws PermissionLevelException {
         if (!userRequesting.isAdmin() && !userRequesting.equals(user)) {
             throw new PermissionLevelException();
@@ -35,7 +88,7 @@ public class UserServiceImp implements UserService {
         userDao.delete(user);
     }
 
-    @Override
+    @Transactional
     public void update(User user, User userRequesting) throws PermissionLevelException {
         if (!userRequesting.isAdmin() && !userRequesting.equals(user)) {
             throw new PermissionLevelException();
@@ -43,35 +96,29 @@ public class UserServiceImp implements UserService {
         userDao.update(user);
     }
 
-    @Override
-    public User findByUsername(String username) throws NotFoundException {
+    @Transactional
+    public Optional<User> findByUsername(String username) {
         User user = userDao.findByUsername(username);
-        if (user == null) {
-            throw new NotFoundException();
-        }
-        return user;
+        return Optional.ofNullable(user);
     }
 
-    @Override
-    public User findByEmail(String email) throws NotFoundException {
+    @Transactional
+    public Optional<User> findByEmail(String email) {
         User user = userDao.findByEmail(email);
-        if (user == null) {
-            throw new NotFoundException();
-        }
-        return user;
+        return Optional.ofNullable(user);
     }
 
-    @Override
+    @Transactional
     public List<User> listByRecent(int page, int size) {
         return userDao.listByRecent(page, size);
     }
 
-    @Override
+    @Transactional
     public List<User> listByPopular(int page, int size) {
         return userDao.listByPopular(page, size);
     }
 
-    @Override
+    @Transactional
     public List<User> getAll(int page, int size) {
         return userDao.getAll(page, size);
     }

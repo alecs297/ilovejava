@@ -19,6 +19,7 @@ public class User {
 
     private boolean admin = false;
 
+    private Integer points = 0;
 
     public UUID getId() {
         return id;
@@ -61,4 +62,11 @@ public class User {
         this.admin = admin;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
 }

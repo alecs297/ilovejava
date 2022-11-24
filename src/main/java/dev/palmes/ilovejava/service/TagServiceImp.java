@@ -1,13 +1,12 @@
 package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.dao.TagDao;
+import dev.palmes.ilovejava.exceptions.NotFoundException;
+import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
 
 public class TagServiceImp implements TagService {
 
@@ -18,36 +17,44 @@ public class TagServiceImp implements TagService {
     }
 
     @Override
-    public Optional<Tag> get(String id) {
-        return tagDao.get(id);
+    public Tag get(String id) throws NotFoundException {
+        return tagDao.get(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public void save(Tag tag, User user) {
-        // TODO : Check if user is admin
+    public void save(Tag tag, User user) throws PermissionLevelException {
+        if (!user.isAdmin()) {
+            throw new PermissionLevelException();
+        }
         tagDao.save(tag);
     }
 
     @Override
-    public void delete(Tag tag, User user) {
-        // TODO : Check if user is admin
+    public void delete(Tag tag, User user) throws PermissionLevelException {
+        if (!user.isAdmin()) {
+            throw new PermissionLevelException();
+        }
         tagDao.delete(tag);
     }
 
     @Override
-    public void update(Tag tag, User user) {
-        // TODO : Check if user is admin
+    public void update(Tag tag, User user) throws PermissionLevelException {
+        if (!user.isAdmin()) {
+            throw new PermissionLevelException();
+        }
         tagDao.update(tag);
     }
 
     @Override
-    public List<Tag> getAll(User user) {
-        // TODO : Check if user is admin
-        return tagDao.getAll();
+    public List<Tag> getAll(int page, int size, User user) throws PermissionLevelException {
+        if (!user.isAdmin()) {
+            throw new PermissionLevelException();
+        }
+        return tagDao.getAll(page, size);
     }
 
     @Override
-    public List<Tag> getPublicTags() {
-        return tagDao.getPublicTags();
+    public List<Tag> getPublicTags(int page, int size) {
+        return tagDao.getPublicTags(page, size);
     }
 }

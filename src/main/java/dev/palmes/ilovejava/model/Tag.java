@@ -1,11 +1,13 @@
 package dev.palmes.ilovejava.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class Tag {
     @Id
+    @Column(columnDefinition = "VARCHAR(16)")
     private String id;
 
     private String displayName;

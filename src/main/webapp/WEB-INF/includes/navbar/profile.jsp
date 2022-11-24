@@ -6,7 +6,7 @@
         69 points
     </div>
 </div>
-<div id="profile-dropdown" class="lg:hidden text-5xl lg:text-xl lg:py-3">
+<div id="profile-dropdown" class="lg:hidden text-5xl px-0 lg:px-3 lg:text-xl lg:py-3">
     <ul>
         <li class="hover:text-java-pink">
             <a href="/profile">Profile</a>

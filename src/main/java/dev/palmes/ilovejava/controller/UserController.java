@@ -84,6 +84,7 @@ public class UserController {
         try {
             userService.save(user, password);
             session.setAttribute("user", user);
+            return "redirect:/";
         } catch (AlreadyExistException | InvalidFormatException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("username", username);

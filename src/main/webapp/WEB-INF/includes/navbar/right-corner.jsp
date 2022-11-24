@@ -4,8 +4,8 @@
       {<span class="invisible text-java-pink">/</span>}
     </span>
   </div>
-  <div id="navbar-content" class="absolute bg-background-default left-0 right-0 lg:static m-auto hidden lg:block cursor-pointer p-2 float-right">
-    <div class="w-full h-screen px-48 lg:p-0">
+  <div id="navbar-content" class="absolute bg-background-default left-0 right-0 h-screen lg:h-max lg:static hidden lg:block cursor-pointer float-right">
+    <div class="w-full px-48 lg:p-0">
       <nav class="block lg:hidden py-12 text-5xl">
         <h2 class="text-6xl font-bold mb-12 cursor-default select-none">Navigation</h2>
         <jsp:include page="content.jsp" />

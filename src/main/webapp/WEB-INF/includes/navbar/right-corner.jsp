@@ -13,7 +13,7 @@
       </nav>
       <c:choose>
         <c:when test="${empty user}">
-          <h2 class="text-6xl font-bold mb-12 cursor-default select-none">Account</h2>
+          <h2 class="lg:hidden text-6xl font-bold mb-12 cursor-default select-none">Account</h2>
           <a class="text-5xl lg:text-xl block underline decoration-wavy decoration-java-blue underline-offset-8 rounded-lg px-0 lg:px-6 py-3 align-top" href="/login">Login</a>
         </c:when>
         <c:otherwise>

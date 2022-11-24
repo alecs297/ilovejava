@@ -24,7 +24,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getAll() {
+    public List<User> getAll(int page, int size) {
         return sessionFactory.getCurrentSession().createQuery("from User").list();
     }
 
@@ -58,12 +58,12 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public List<User> listByRecent() {
+    public List<User> listByRecent(int page, int size) {
         return null; // TODO
     }
 
     @Override
-    public List<User> listByPopular() {
+    public List<User> listByPopular(int page, int size) {
         return null; // TODO
     }
 }

@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface TagDao extends Dao<Tag> {
     Optional<Tag> get(String id);
-    List<Tag> getPublicTags();
+
+    List<Tag> getPublicTags(int page, int size);
 }

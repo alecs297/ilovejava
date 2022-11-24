@@ -9,8 +9,12 @@ import java.util.UUID;
 public interface UserDao extends Dao<User> {
 
     Optional<User> get(UUID id);
+
     User findByUsername(String username);
+
     User findByEmail(String email);
-    List<User> listByRecent();
-    List<User> listByPopular();
+
+    List<User> listByRecent(int page, int size);
+
+    List<User> listByPopular(int page, int size);
 }

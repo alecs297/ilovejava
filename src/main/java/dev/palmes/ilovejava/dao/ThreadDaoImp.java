@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +29,8 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Thread> getAll() {
+    public List<Thread> getAll(int page, int size) {
+        // TODO: Implement pagination
         return sessionFactory.getCurrentSession().createQuery("from Thread").list();
     }
 
@@ -50,7 +50,8 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
-    public List<Thread> getAllByTag(String tag) {
+    public List<Thread> getAllByTag(String tag, int page, int size) {
+        // TODO : Implement pagination
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
         Root<Thread> result = query.from(Thread.class);
@@ -61,7 +62,8 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Thread> getAllByUser(UUID userId) {
+    public List<Thread> getAllByUser(UUID userId, int page, int size) {
+        // TODO : Implement pagination
         return sessionFactory.getCurrentSession().createQuery("from Thread where id = :userId")
                 .setParameter("userId", userId)
                 .list();
@@ -69,19 +71,20 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Thread> getAllByUser(String username) {
+    public List<Thread> getAllByUser(String username, int page, int size) {
+        // TODO : Implement pagination
         return sessionFactory.getCurrentSession().createQuery("from Thread where Thread.entry.author.username = :username")
                 .setParameter("username", username)
                 .list();
     }
 
     @Override
-    public List<Thread> listByRecent() {
+    public List<Thread> listByRecent(int page, int size) {
         return null; // TODO
     }
 
     @Override
-    public List<Thread> listByPopular() {
+    public List<Thread> listByPopular(int page, int size) {
         return null; // TODO
     }
 }

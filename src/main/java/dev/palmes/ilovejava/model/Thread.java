@@ -11,6 +11,7 @@ public class Thread {
     private UUID id;
 
     private boolean locked;
+    private boolean removed;
 
     private String title;
 
@@ -36,6 +37,14 @@ public class Thread {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     public String getTitle() {

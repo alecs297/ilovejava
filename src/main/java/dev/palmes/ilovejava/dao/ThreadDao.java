@@ -8,9 +8,16 @@ import java.util.UUID;
 
 public interface ThreadDao extends Dao<Thread> {
     Optional<Thread> get(UUID id);
-    List<Thread> getAllByTag(String tag);
-    List<Thread> getAllByUser(UUID userId);
-    List<Thread> getAllByUser(String username);
-    List<Thread> listByRecent();
-    List<Thread> listByPopular();
+
+    List<Thread> getAll(int page, int size);
+
+    List<Thread> getAllByTag(String tag, int page, int size);
+
+    List<Thread> getAllByUser(UUID userId, int page, int size);
+
+    List<Thread> getAllByUser(String username, int page, int size);
+
+    List<Thread> listByRecent(int page, int size);
+
+    List<Thread> listByPopular(int page, int size);
 }

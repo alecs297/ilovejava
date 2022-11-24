@@ -26,7 +26,8 @@ public class PostDaoImp implements PostDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Post> getAll() {
+    public List<Post> getAll(int page, int size) {
+        // TODO: Implement pagination
         return sessionFactory.getCurrentSession().createQuery("from Post").list();
     }
 

@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.controller;
 
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.model.User;
 import dev.palmes.ilovejava.service.UserService;
@@ -83,7 +84,7 @@ public class UserController {
         try {
             userService.save(user, password);
             session.setAttribute("user", user);
-        } catch (AlreadyExistException e) {
+        } catch (AlreadyExistException | InvalidFormatException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("username", username);
             model.addAttribute("email", email);

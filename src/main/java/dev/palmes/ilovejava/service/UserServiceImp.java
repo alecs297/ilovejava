@@ -2,6 +2,7 @@ package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.dao.UserDao;
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
@@ -28,21 +29,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional
-    public void save(User user, String originalPassword) throws AlreadyExistException {
+    public void save(User user, String originalPassword) throws AlreadyExistException, InvalidFormatException {
         if (userDao.findByUsername(user.getUsername()) != null) {
             throw new AlreadyExistException("Username already exist");
         }
         if (!checkUsername(user.getUsername())) {
-            throw new AlreadyExistException("Username is not valid");
+            throw new InvalidFormatException("Username is not valid");
         }
         if (userDao.findByEmail(user.getEmail()) != null) {
             throw new AlreadyExistException("Email already exist");
         }
         if (!checkEmail(user.getEmail())) {
-            throw new AlreadyExistException("Email is not valid");
+            throw new InvalidFormatException("Email is not valid");
         }
         if (!checkPassword(originalPassword)) {
-            throw new AlreadyExistException("Password is not valid");
+            throw new InvalidFormatException("Password is not valid");
         }
         user.setPassword(new BCryptPasswordEncoder().encode(originalPassword));
 

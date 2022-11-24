@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
@@ -24,7 +25,7 @@ public interface UserService {
      *
      * @param user The user to create
      */
-    void save(User user, String originalPassword) throws AlreadyExistException;
+    void save(User user, String originalPassword) throws AlreadyExistException, InvalidFormatException;
 
     /**
      * Update a user from the database, the user performing the

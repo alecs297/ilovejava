@@ -46,6 +46,11 @@ public class Post {
         return content;
     }
 
+    public String getContentSummury() {
+        // TODO
+        return "";
+    }
+
     public void setContent(String content) {
         this.content = content;
     }

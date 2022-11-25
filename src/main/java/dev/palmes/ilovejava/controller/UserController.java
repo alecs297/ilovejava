@@ -25,6 +25,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * GET - Login page mapping
+     * <p>
+     * If user is already logged in, return to "/"
+     * </p>
+     */
     @GetMapping("/login")
     public String login(HttpSession session) {
         if (session.getAttribute("user") != null) {
@@ -33,6 +39,12 @@ public class UserController {
         return "account/login";
     }
 
+    /**
+     * GET - Register page mapping
+     * <p>
+     * If user is already logged in, return to "/"
+     * </p>
+     */
     @GetMapping("/register")
     public String register(HttpSession session) {
         if (session.getAttribute("user") != null) {
@@ -41,6 +53,21 @@ public class UserController {
         return "account/register";
     }
 
+    /**
+     * POST - Process login information and connect the user
+     * <ul>
+     *      <li>
+     *          If user is already logged in, return to "/".
+     *      </li>
+     *      <li>
+     *          In case of wrong login information, redirect user to login
+     *          page with information on what went wrong.
+     *      </li>
+     *      <li>
+     *          On successful login redirect user to "/".
+     *      </li>
+     * </ul>
+     */
     @PostMapping("/login")
     public String login(String login, String password, Model model, HttpSession session) {
         if (session.getAttribute("user") != null) {
@@ -73,6 +100,21 @@ public class UserController {
         return "account/login";
     }
 
+    /**
+     * POST - Register a new user
+     * <ul>
+     *     <li>
+     *         If user is already connected redirect to "/".
+     *     </li>
+     *     <li>
+     *         In case of wrong register information, redirect user to
+     *         register page with information on what went wrong.
+     *     </li>
+     *     <li>
+     *         On successful register, connect user and redirect to "/".
+     *     </li>
+     * </ul>
+     */
     @PostMapping("/register")
     public String register(String username, String email, String password, Model model, HttpSession session) {
         if (session.getAttribute("user") != null) {
@@ -93,12 +135,20 @@ public class UserController {
         return "account/register";
     }
 
+    /**
+     * GET - Check if a username is available
+     *
+     * @return boolean in string form
+     */
     @GetMapping("/check-username-available/{username}")
     @ResponseBody
     public String checkUsername(@PathVariable String username) {
         return userService.findByUsername(username).isPresent() ? "false" : "true";
     }
 
+    /**
+     * POST - Logout user by invalidating its session, then redirect to "/"
+     */
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

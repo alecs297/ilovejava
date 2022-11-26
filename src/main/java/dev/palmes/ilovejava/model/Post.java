@@ -3,8 +3,8 @@ package dev.palmes.ilovejava.model;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Entity
 public class Post {
@@ -64,27 +64,15 @@ public class Post {
      * @param maxChar The max number of character wanted
      */
     public String getContentSummary(int maxChar) {
-        if (this.getContent().length() < 200) {
-            return this.getContent();
-        }
-
-        String[] words = this.getContent().split(" ");
-        Iterator<String> wordsIt = Arrays.stream(words).iterator();
-        StringBuilder content = new StringBuilder();
-
-        int charCount = 0;
-        while (wordsIt.hasNext() && charCount < maxChar) {
-            String word = wordsIt.next();
-            charCount += word.length();
-            content.append(charCount == 0 ? "" : " ").append(word);
-        }
-
-        if (wordsIt.hasNext()) {
-            content.append("...");
-        }
-
-
-        return content.toString();
+        AtomicReference<Integer> i = new AtomicReference<>(0);
+        return (
+                this.getContent().length() <= maxChar ?
+                        this.getContent() :
+                        String.join(" ", Arrays.stream(this.getContent().split(" ")).filter(s -> {
+                            i.getAndSet(i.get() + s.length());
+                            return i.get() <= maxChar;
+                        }).toArray(String[]::new)) + " ..."
+        );
     }
 
     public void setContent(String content) {

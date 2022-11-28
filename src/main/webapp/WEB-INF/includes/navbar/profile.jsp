@@ -6,7 +6,7 @@
         ${user.getPoints()} points
     </div>
 </div>
-<div id="profile-dropdown" class="px-0 lg:px-3 lg:hidden text-5xl lg:text-xl lg:py-3">
+<div id="profile-dropdown" class="px-0 lg:hidden text-5xl lg:text-xl lg:py-3">
     <ul class="py-3">
         <li class="hover:text-java-pink">
             <a href="/profile">Profile</a>

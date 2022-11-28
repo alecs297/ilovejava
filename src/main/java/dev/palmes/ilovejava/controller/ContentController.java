@@ -31,7 +31,7 @@ public class ContentController {
      */
     @GetMapping("/trending")
     public String trending() {
-        return "content/trending";
+        return "content/posts";
     }
 
     /**
@@ -42,6 +42,6 @@ public class ContentController {
      */
     @GetMapping("/recent")
     public String recent() {
-        return "content/recent";
+        return "content/posts";
     }
 }

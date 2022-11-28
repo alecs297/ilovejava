@@ -17,7 +17,7 @@
         <li class="text-red-600">
             <form action="/logout" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="submit" value="Logout">
+                <input class="cursor-pointer" type="submit" value="Logout">
             </form>
         </li>
     </ul>

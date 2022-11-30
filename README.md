@@ -32,7 +32,7 @@ to generate the `style.css` file, install dependencies with
 npm i
 ```
 
-then launch the css script building script
+then launch the css building script
 
 ```shell
 npm run build:postcss

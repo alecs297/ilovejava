@@ -11,7 +11,7 @@
       <input class="block w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}" id="title" name="title" type="text" placeholder="Title" />
       <label class="block text-slate-400 text-4xl lg:text-sm px-1" for="title">Make it clear and concise</label>
       <textarea class="block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}" id="content" name="content" placeholder="What's on your mind ?"></textarea>
-      <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose-xl p-2 hidden max-w-full"></div>
+      <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full"></div>
       <label class="block text-slate-400 text-4xl lg:text-sm px-1" for="content">Markdown is supported !</label>
       <div class="text-5xl lg:text-3xl">
         <label class="inline-block align-middle w-24 lg:w-12 border-2 rounded-3xl cursor-pointer inline-flex items-center">

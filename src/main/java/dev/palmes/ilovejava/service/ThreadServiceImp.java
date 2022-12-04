@@ -6,10 +6,12 @@ import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ThreadServiceImp implements ThreadService {
 
     private final ThreadDao threadDao;

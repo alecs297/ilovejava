@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ContentController {
@@ -19,13 +20,18 @@ public class ContentController {
         this.threadService = threadService;
     }
 
+    @GetMapping("/new")
+    public String newpost(HttpSession session) {
+        return session.getAttribute("user") != null ? "content/new" : "redirect:/login";
+    }
+
     /**
      * GET - Explore page mapping
      * <p>
      * Fetches 'All the posts' and redirect to the "/explore" view
      * </p>
      */
-    @GetMapping("/explore")
+    //@GetMapping("/explore")
     public String explore(HttpServletRequest request) {
         String content = "";
 
@@ -50,7 +56,7 @@ public class ContentController {
      * Fetches the most popular posts and redirect to the "/explore" view
      * </p>
      */
-    @GetMapping("/trending")
+    //@GetMapping("/trending")
     public String trending(HttpServletRequest request) {
         String content = "";
 
@@ -75,7 +81,7 @@ public class ContentController {
      * Fetches the latest posts and redirect to the "/explore" view
      * </p>
      */
-    @GetMapping("/recent")
+    //@GetMapping("/recent")
     public String recent(HttpServletRequest request) {
         String content = "";
 

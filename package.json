@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/alecs297/ilovejava#readme",
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.8",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19",
     "postcss-cli": "^10.0.0",

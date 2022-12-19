@@ -4,7 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,9 +27,13 @@ public class Thread {
     @JoinColumn(nullable = false)
     private Post entry;
 
+    @OneToMany
+    private Set<Post> posts = new HashSet<>();
+
     @ManyToMany
     @JoinColumn(nullable = false)
     private List<Tag> tags;
+
 
     public UUID getId() {
         return id;
@@ -67,6 +73,14 @@ public class Thread {
 
     public void setEntry(Post entry) {
         this.entry = entry;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    protected void addPost(Post post) {
+        this.posts.add(post);
     }
 
     public List<Tag> getTags() {

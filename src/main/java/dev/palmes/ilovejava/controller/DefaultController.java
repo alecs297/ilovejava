@@ -9,4 +9,14 @@ public class DefaultController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("404")
+    public String error404() {
+        return ("errors/notAvailable");
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return ("errors/notAvailable");
+    }
 }

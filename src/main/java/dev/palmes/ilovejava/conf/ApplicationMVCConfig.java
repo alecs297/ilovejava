@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "dev.palmes.ilovejava" })
+@ComponentScan(basePackages = {"dev.palmes.ilovejava"})
 public class ApplicationMVCConfig implements WebMvcConfigurer {
     @Bean
     public InternalResourceViewResolver resolver() {
@@ -24,6 +24,4 @@ public class ApplicationMVCConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
-
-
 }

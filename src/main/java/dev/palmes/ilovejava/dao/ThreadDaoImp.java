@@ -84,11 +84,43 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     public List<Thread> listByRecent(int page, int size) {
-        return null; // TODO
+
+        CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
+        Root<Thread> root = query.from(Thread.class);
+
+        Join<Thread, Post> children = root.join("entry", JoinType.INNER);
+        query.orderBy(builder.asc(children.get("creationDate")));
+
+        return sessionFactory.getCurrentSession().createQuery(query)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<Thread> listByPopular(int page, int size) {
-        return null; // TODO
+    public List<Thread> listByPopular(int page, int size, Date fromDate) {
+        // Create a CriteriaBuilder instance
+        CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
+        Root<Thread> root = query.from(Thread.class);
+
+        Join<Thread, Post> childJoin = root.join("posts");
+
+        // Add a predicate to filter the child objects by the date they were created
+        Predicate datePredicate = builder.greaterThanOrEqualTo(childJoin.get("creationDate"), fromDate);
+        // Use the predicate to filter the child objects
+        childJoin.on(datePredicate);
+        
+
+        query.groupBy(root.get("id"));
+
+
+        // Add a having clause to filter the groups by the number of child objects
+        Expression<Long> countExpression = builder.count(childJoin.get("id"));
+
+        query.orderBy(builder.desc(countExpression));
+
+        return sessionFactory.getCurrentSession().createQuery(query).getResultList();
     }
 }

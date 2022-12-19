@@ -8,6 +8,7 @@ import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,6 +79,8 @@ public class ThreadServiceImp implements ThreadService {
 
     @Override
     public List<Thread> listByPopular(int page, int size) {
-        return threadDao.listByPopular(page, size);
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return threadDao.listByPopular(page, size, cal.getTime());
     }
 }

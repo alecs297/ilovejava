@@ -1,15 +1,14 @@
 package dev.palmes.ilovejava.dao;
 
+import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.Thread;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +29,7 @@ public class ThreadDaoImp implements ThreadDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Thread> getAll(int page, int size) {
-        // TODO: Implement pagination
-        return sessionFactory.getCurrentSession().createQuery("from Thread").list();
+        return sessionFactory.getCurrentSession().createQuery("from Thread").setFirstResult(page * size).setMaxResults(size).list();
     }
 
     @Override
@@ -51,30 +49,36 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     public List<Thread> getAllByTag(String tag, int page, int size) {
-        // TODO : Implement pagination
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
         Root<Thread> result = query.from(Thread.class);
         Join<Thread, dev.palmes.ilovejava.model.Tag> tagJoin = result.join("tags");
         query.select(result).where(builder.equal(tagJoin.get("name"), tag));
-        return sessionFactory.getCurrentSession().createQuery(query).getResultList();
+        return sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Thread> getAllByUser(UUID userId, int page, int size) {
-        // TODO : Implement pagination
-        return sessionFactory.getCurrentSession().createQuery("from Thread where id = :userId")
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Thread where id = :userId")
                 .setParameter("userId", userId)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
                 .list();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Thread> getAllByUser(String username, int page, int size) {
-        // TODO : Implement pagination
         return sessionFactory.getCurrentSession().createQuery("from Thread where Thread.entry.author.username = :username")
                 .setParameter("username", username)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
                 .list();
     }
 

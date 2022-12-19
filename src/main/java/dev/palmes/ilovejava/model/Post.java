@@ -26,7 +26,13 @@ public class Post {
 
     private String content;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
 
     private boolean removed = false;
 

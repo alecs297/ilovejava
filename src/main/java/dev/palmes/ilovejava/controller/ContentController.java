@@ -110,4 +110,9 @@ public class ContentController {
         request.setAttribute("content", content);
         return "content/posts";
     }
+
+    @GetMapping("/rules")
+    public String rules(){
+        return "content/rules";
+    }
 }

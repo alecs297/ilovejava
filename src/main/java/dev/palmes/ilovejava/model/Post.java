@@ -1,5 +1,10 @@
 package dev.palmes.ilovejava.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,7 +14,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Entity
 public class Post {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "VARCHAR(36)")
+    @Type(type = "uuid-char")
     private UUID id;
 
     @ManyToOne
@@ -99,8 +107,8 @@ public class Post {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
     public Thread getThread() {
@@ -108,6 +116,7 @@ public class Post {
     }
 
     public void setThread(Thread thread) {
+        thread.addPost(this);
         this.thread = thread;
     }
 }

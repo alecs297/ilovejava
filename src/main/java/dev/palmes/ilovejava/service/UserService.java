@@ -5,7 +5,9 @@ import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -89,4 +91,15 @@ public interface UserService {
      * @return List of users
      */
     List<User> getAll(int page, int size);
+
+
+    /**
+     * Get the user with matching the credentials are correct
+     *
+     * @param login Email or Username of the user
+     * @param password Password of the user
+     * @return User matching the credentials
+     * @throws NotFoundException User doesn't exist
+     */
+    User getUserFromCredentials(String login, String password) throws NotFoundException;
 }

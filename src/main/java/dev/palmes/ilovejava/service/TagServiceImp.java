@@ -5,9 +5,11 @@ import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TagServiceImp implements TagService {
 
     private final TagDao tagDao;

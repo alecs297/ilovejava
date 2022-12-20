@@ -7,13 +7,15 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
 import dev.palmes.ilovejava.service.ThreadService;
 import dev.palmes.ilovejava.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -150,14 +152,14 @@ public class UserController {
     @GetMapping("/edit-account")
     public String editAccount(HttpSession session) {
         if (session.getAttribute("user") == null) {
-            return("redirect:/login");
+            return ("redirect:/login");
         }
 
-        return("account/edit");
+        return ("account/edit");
     }
 
     /**
-     * POST - Register a new user
+     * PUT - Register a new user
      * <ul>
      *     <li>
      *         If user is already connected redirect to "/".
@@ -171,22 +173,38 @@ public class UserController {
      *     </li>
      * </ul>
      */
-    @PostMapping("/edit-account")
-    public String editAccount(String oldPassword, String email, String username, String newPassword, Model model, HttpSession session) {
+    @PutMapping("/edit-account")
+    public String editAccount(
+            String originalPassword,
+            @RequestParam(required = false, defaultValue = "") String email,
+            @RequestParam(required = false, defaultValue = "") String username,
+            @RequestParam(required = false, defaultValue = "") String newPassword,
+            @RequestParam(required = false, defaultValue = "") String userId,
+            Model model,
+            HttpServletResponse response,
+            HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "account/login";
         }
 
         try {
-            // If the confOldPassword doesn't match the saved one, throws NotFoundException
-            user = userService.updateSelf(user, oldPassword, email, username, newPassword);
-            session.setAttribute("user", user);
+            User tmpUser = new User();
+
+            tmpUser.setId(userId.isBlank() ? user.getId() : UUID.fromString(userId));
+            tmpUser.setPassword(newPassword);
+            tmpUser.setEmail(email);
+            tmpUser.setUsername(username);
+
+            userService.update(tmpUser, user, originalPassword);
+            session.setAttribute("user", userService.get(tmpUser.getId()));
             return "redirect:/";
-        } catch (AlreadyExistException | PermissionLevelException | InvalidFormatException e) {
+        } catch (AlreadyExistException | PermissionLevelException | InvalidFormatException | NotFoundException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("username", username);
             model.addAttribute("email", email);
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             return "account/edit";
         }
     }

@@ -8,7 +8,7 @@
         String content = (String) request.getAttribute("content");
         //out.println(content);
     %>
-    <jsp:include page="/WEB-INF/includes/thread/thread.jsp"/>
+    <jsp:include page="/WEB-INF/includes/thread/thread_list.jsp"/>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 </body>

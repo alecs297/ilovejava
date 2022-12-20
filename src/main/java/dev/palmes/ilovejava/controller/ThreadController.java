@@ -11,10 +11,7 @@ import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -60,9 +57,10 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads")
-    public String newThread(String title, String content, HttpSession session) {
+    public String newThread(String title, String content, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "redirect:/login";
         }
 
@@ -79,7 +77,40 @@ public class ThreadController {
 
         this.threadService.save(thread);
 
-        return "redirect:/explore";
+        return "redirect:/threads/" + thread.getId();
+    }
+
+    /**
+     * PUT - Update a thread
+     * <p>
+     * Update a thread title
+     * </p>
+     */
+    @PutMapping("/threads/{id}")
+    public String updateThread(@PathVariable String id, String title, Model model, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "redirect:/login";
+        }
+
+        UUID uuid = UUID.fromString(id);
+
+        try {
+            Thread thread = this.threadService.get(uuid);
+            if (thread.getEntry().getThread().getId().equals(user.getId()) || user.isAdmin()) {
+                thread.setTitle(title);
+                this.threadService.save(thread);
+            } else {
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                model.addAttribute("error", "You don't have permission to do this");
+                return "errors/notPermitted";
+            }
+        } catch (NotFoundException | NotAvailableException e) {
+            return "redirect:/errors/notAvailable";
+        }
+
+        return "redirect:/threads/" + id;
     }
 
     /**
@@ -89,7 +120,7 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads/{id}")
-    public String newPost(Post parent, String content, HttpSession session) {
+    public String newPost(Post parent, String content, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
@@ -106,44 +137,9 @@ public class ThreadController {
 
         postService.save(post);
 
-        return "redirect:/explore";
+        return "redirect:/threads/" + parent.getThread().getId();
     }
 
-    /**
-     * POST - Post a reply to a post
-     * <p>
-     * Create a new post and set the parent to the post that is being replied to
-     * and the thread to the thread that the post is in
-     * </p>
-     */
-    @PostMapping("/posts/{id}")
-    public String replyPost(@PathVariable String id, String content, HttpServletResponse response, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            return "redirect:/login";
-        }
-
-        UUID uuid = UUID.fromString(id);
-
-        Post parent;
-        try {
-            parent = this.postService.get(uuid);
-        } catch (NotFoundException | NotAvailableException e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return "redirect:/explore";
-        }
-
-        Post post = new Post();
-        post.setContent(content);
-        post.setAuthor(user);
-        post.setParent(parent);
-        post.setThread(parent.getThread());
-
-        postService.save(post);
-
-        return "redirect:/explore";
-    }
 
     /**
      * DELETE - Delete a Thread
@@ -155,7 +151,7 @@ public class ThreadController {
     public String deleteThread(Thread thread, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "redirect:/login";
         }
         if (thread == null) {
@@ -172,5 +168,6 @@ public class ThreadController {
 
         return "redirect:/explore";
     }
+
 
 }

@@ -27,7 +27,7 @@ public class ThreadController {
      * Create a new thread and the first post in it
      * </p>
      */
-    @PostMapping("/thread/new")
+    @PostMapping("/threads")
     public String newThread(String title, String content, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -56,7 +56,7 @@ public class ThreadController {
      * Create a new post in a thread
      * </p>
      */
-    @PostMapping("/thread/post/new")
+    @PostMapping("/threads/{id}")
     public String newPost(Post parent, String content, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -77,4 +77,10 @@ public class ThreadController {
         return "redirect:/explore";
     }
 
+    /**
+     * DELETE - Delete a Thread
+     * <p>
+     *     Mark a thread as deleted
+     * </p>
+     */
 }

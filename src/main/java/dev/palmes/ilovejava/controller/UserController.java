@@ -3,6 +3,7 @@ package dev.palmes.ilovejava.controller;
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
 import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
+import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
 import dev.palmes.ilovejava.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -138,5 +139,55 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    /**
+     * GET - Edit page mapping
+     * <p>
+     * If user is not logged in, redirect to "/login"
+     * </p>
+     */
+    @GetMapping("/edit-account")
+    public String editAccount(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return("redirect:/login");
+        }
+
+        return("account/edit");
+    }
+
+    /**
+     * POST - Register a new user
+     * <ul>
+     *     <li>
+     *         If user is already connected redirect to "/".
+     *     </li>
+     *     <li>
+     *         On successful update, update session and redirect to "/".
+     *     </li>
+     *     <li>
+     *         In case of wrong information, redirect user to
+     *         edit-account page with information on what went wrong.
+     *     </li>
+     * </ul>
+     */
+    @PostMapping("/edit-account")
+    public String editAccount(String oldPassword, String email, String username, String newPassword, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "account/login";
+        }
+
+        try {
+            // If the confOldPassword doesn't match the saved one, throws NotFoundException
+            user = userService.updateSelf(user, oldPassword, email, username, newPassword);
+            session.setAttribute("user", user);
+            return "redirect:/";
+        } catch (AlreadyExistException | PermissionLevelException | InvalidFormatException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("username", username);
+            model.addAttribute("email", email);
+            return "account/edit";
+        }
     }
 }

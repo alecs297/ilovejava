@@ -102,4 +102,19 @@ public interface UserService {
      * @throws NotFoundException User doesn't exist
      */
     User getUserFromCredentials(String login, String password) throws NotFoundException;
+
+    /**
+     * Check and update the information of an account
+     *
+     * @param user User requesting the change
+     * @param oldPassword Password previous to the change
+     * @param newEmail New email requested
+     * @param newUsername New username requested
+     * @param newPassword New password requested
+     * @return Updated User
+     * @throws AlreadyExistException Another user already uses these credentials
+     * @throws InvalidFormatException Format is not correct
+     * @throws PermissionLevelException The User did not confirm his authority on the account with the oldPassword
+     */
+    User updateSelf(User user, String oldPassword, String newEmail, String newUsername, String newPassword) throws AlreadyExistException, InvalidFormatException, PermissionLevelException;
 }

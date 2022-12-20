@@ -145,4 +145,49 @@ public class UserServiceImp implements UserService {
         }
         return user;
     }
+
+    @Transactional
+    public User updateSelf(User user, String oldPassword, String newEmail, String newUsername, String newPassword) throws AlreadyExistException, InvalidFormatException, PermissionLevelException {
+        if (!new BCryptPasswordEncoder().matches(oldPassword, user.getPassword())) {
+            throw new PermissionLevelException("Old Password is wrong, changes are not permitted");
+        }
+
+        // New password
+        if (!newPassword.equals("")) {
+            if (!checkPassword(newPassword)) {
+                throw new InvalidFormatException("Password is not valid");
+            }
+            user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        }
+
+        // email
+        User tmpUser;
+        if (!newEmail.equals("")) {
+            if (!checkEmail(newEmail)) {
+                throw new InvalidFormatException("Email is not valid");
+            }
+
+            tmpUser = userDao.findByEmail(newEmail);
+            if (tmpUser != null && tmpUser.getId() != user.getId()) {
+                throw new AlreadyExistException("Email already exists");
+            }
+            user.setEmail(newEmail);
+        }
+
+        // username
+        if (!newUsername.equals("")) {
+            if (!checkUsername(newUsername)) {
+                throw new InvalidFormatException("Username is not valid");
+            }
+            tmpUser = userDao.findByEmail(newUsername);
+            if (tmpUser != null && tmpUser.getId() != user.getId()) {
+                throw new AlreadyExistException("Email already exists");
+            }
+            user.setEmail(newUsername);
+        }
+
+        // Everything is valid and in 'user', save it
+        userDao.save(user);
+        return user;
+    }
 }

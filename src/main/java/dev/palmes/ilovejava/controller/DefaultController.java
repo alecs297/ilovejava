@@ -11,5 +11,12 @@ public class DefaultController {
     }
 
     @GetMapping("/about")
-    public String about() {return "about";}
+    public String about() {
+        return "about";
+    }
+
+    @GetMapping("/rules")
+    public String rules(){
+        return "rules";
+    }
 }

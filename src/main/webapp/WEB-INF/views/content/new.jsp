@@ -10,7 +10,7 @@
         <p class="text-5xl lg:text-2xl mb-12">Remember to check out our <a class="underline text-java-pink"
                                                                            href="/about#rules">rules</a> before posting.
         </p>
-        <form:form class="w-full" action="/thread/new" method="POST">
+        <form:form class="w-full" action="/threads" method="POST">
             <input class="block w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
                    id="title" name="title" type="text" placeholder="Title"/>
             <label class="block text-slate-400 text-4xl lg:text-sm px-1" for="title">Make it clear and concise</label>

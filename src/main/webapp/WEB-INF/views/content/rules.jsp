@@ -5,11 +5,11 @@
         <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
 
         <div class="w-screen px-16 min-h-[90vh] break-words grid">
-            <div class="max-w-full place-self-center text-7xl lg:text-5xl">
+            <div class="max-w-full place-self-center py-4 text-7xl lg:text-5xl">
 
                 <h1 class="font-bold text-center">The few rules of <span class="text-java-pink font-black">I Love Java</span> are <span class="text-java-blue font-black">simple</span>!</h1>
-                <div class="lg:max-w-[66%] my-16 lg:text-2xl font-normal tracking-tight break-words mx-auto">
-                    <p class="text-center"> To create a positive and collaborative community, we rely on everyone's participation and adherence to these simple rules.
+                <div class="lg:max-w-[66%] my-16 text-5xl lg:text-2xl font-normal tracking-tight break-words mx-auto">
+                    <p class="text-6xl lg:text-3xl text-center"> To create a positive and collaborative community, we rely on everyone's participation and adherence to these simple rules.
                     </p><br>
                     <!--  TODO : add a space between each rule, maybe add a vertical bar on the left side of the rules too  -->
                     <div class="mx-auto text-left">

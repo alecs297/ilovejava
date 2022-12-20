@@ -25,10 +25,9 @@
     </form>
   </div>
 </div>
+<jsp:include page="/WEB-INF/includes/footer.jsp"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
 <script src="/static/js/new.js"></script>
 <script src="/static/js/areahelper.js"></script>
-<jsp:include page="/WEB-INF/includes/footer.jsp"/>
 </body>
 </html>

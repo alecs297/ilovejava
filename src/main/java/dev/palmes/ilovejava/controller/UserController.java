@@ -5,14 +5,12 @@ import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
+import dev.palmes.ilovejava.service.ThreadService;
 import dev.palmes.ilovejava.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
@@ -21,9 +19,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final ThreadService threadService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ThreadService threadService) {
         this.userService = userService;
+        this.threadService = threadService;
     }
 
     /**
@@ -188,6 +188,30 @@ public class UserController {
             model.addAttribute("username", username);
             model.addAttribute("email", email);
             return "account/edit";
+        }
+    }
+
+    /**
+     * GET - User posts list
+     */
+    @GetMapping("/user/{username}")
+    public String userPosts(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        Optional<User> user = userService.findByUsername(username);
+
+        if (user.isPresent()) {
+
+            model.addAttribute("user", user.get());
+            try {
+                model.addAttribute("threads", threadService.getAllByUser(user.get().getId(), 0, 10, removed, currentUser));
+            } catch (PermissionLevelException e) {
+                model.addAttribute("error", e.getMessage());
+            }
+            // TODO: Change view name
+            return "user/posts";
+        } else {
+
+            return "errors/notAvailable";
         }
     }
 }

@@ -38,12 +38,11 @@ public class ThreadController {
     @GetMapping("/threads/{id}")
     public ModelAndView thread(@PathVariable String id, Model model, HttpSession session) {
         //TODO: Change view path
-        ModelAndView modelAndView = new ModelAndView("thread/thread");
+        ModelAndView modelAndView = new ModelAndView("content/thread");
 
         UUID uuid = UUID.fromString(id);
 
         try {
-
             Thread thread = this.threadService.get(uuid);
             modelAndView.addObject("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {
@@ -111,6 +110,42 @@ public class ThreadController {
     }
 
     /**
+     * POST - Post a reply to a post
+     * <p>
+     * Create a new post and set the parent to the post that is being replied to
+     * and the thread to the thread that the post is in
+     * </p>
+     */
+    @PostMapping("/posts/{id}")
+    public String replyPost(@PathVariable String id, String content, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return "redirect:/login";
+        }
+
+        UUID uuid = UUID.fromString(id);
+
+        Post parent;
+        try {
+            parent = this.postService.get(uuid);
+        } catch (NotFoundException | NotAvailableException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return "redirect:/explore";
+        }
+
+        Post post = new Post();
+        post.setContent(content);
+        post.setAuthor(user);
+        post.setParent(parent);
+        post.setThread(parent.getThread());
+
+        postService.save(post);
+
+        return "redirect:/explore";
+    }
+
+    /**
      * DELETE - Delete a Thread
      * <p>
      * Mark a thread as deleted
@@ -120,17 +155,19 @@ public class ThreadController {
     public String deleteThread(Thread thread, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             return "redirect:/login";
         }
         if (thread == null) {
-            return "redirect:/explore";
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return "errors/notAvailable";
         }
         try {
             threadService.delete(thread, user);
         } catch (PermissionLevelException e) {
             model.addAttribute("error", e.getMessage());
-            response.setStatus(403);
-            return "redirect:/error/notPermitted";
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return "errors/notPermitted";
         }
 
         return "redirect:/explore";

@@ -4,7 +4,8 @@ const content_div = document.getElementById("content");
 const md = window.markdownit({
     html: true,
     linkify: true,
-    typographer: true
+    typographer: true,
+    breaks: true
 });
 preview_btn.addEventListener("click", () => {
     preview_div.classList.toggle("hidden");

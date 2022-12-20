@@ -38,12 +38,11 @@ public class ThreadController {
     @GetMapping("/threads/{id}")
     public ModelAndView thread(@PathVariable String id, Model model, HttpSession session) {
         //TODO: Change view path
-        ModelAndView modelAndView = new ModelAndView("thread/thread");
+        ModelAndView modelAndView = new ModelAndView("content/thread");
 
         UUID uuid = UUID.fromString(id);
 
         try {
-
             Thread thread = this.threadService.get(uuid);
             modelAndView.addObject("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {

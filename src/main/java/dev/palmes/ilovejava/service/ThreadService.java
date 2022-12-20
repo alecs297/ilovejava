@@ -60,29 +60,52 @@ public interface ThreadService {
     /**
      * Get all threads that exist
      *
-     * @param page Page number
-     * @param size Number of threads per page
+     * @param page    Page number
+     * @param size    Number of threads per page
+     * @param removed If true, include removed threads
+     * @param user    The user requesting the threads.
+     *                If null or not an admin, prevent from getting removed threads
      * @return List of threads
      */
-    List<Thread> getAllByTag(String tag, int page, int size);
+    List<Thread> getAll(int page, int size, boolean removed, User user) throws PermissionLevelException;
 
     /**
      * Get all threads that exist
      *
-     * @param page Page number
-     * @param size Number of threads per page
+     * @param page    Page number
+     * @param size    Number of threads per page
+     * @param removed If true, include removed threads
+     * @param user    The user requesting the threads.
+     *                If null or not an admin, prevent from getting removed threads
      * @return List of threads
      */
-    List<Thread> getAllByUser(UUID userId, int page, int size);
+    List<Thread> getAllByTag(String tag, int page, int size, boolean removed, User user) throws PermissionLevelException;
 
     /**
      * Get all threads that exist
      *
-     * @param page Page number
-     * @param size Number of threads per page
+     * @param page    Page number
+     * @param size    Number of threads per page
+     * @param removed If true, include removed threads
+     * @param user    The user requesting the threads.
+     *                If null or not an admin or the owner,
+     *                prevent from getting removed threads
      * @return List of threads
      */
-    List<Thread> getAllByUser(String username, int page, int size);
+    List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed, User user) throws PermissionLevelException;
+
+    /**
+     * Get all threads that exist
+     *
+     * @param page    Page number
+     * @param size    Number of threads per page
+     * @param removed If true, include removed threads
+     * @param user    The user requesting the threads.
+     *                If null or not an admin or the owner,
+     *                prevent from getting removed threads
+     * @return List of threads
+     */
+    List<Thread> getAllByUser(String username, int page, int size, boolean removed, User user) throws PermissionLevelException;
 
     /**
      * Get all threads that exist

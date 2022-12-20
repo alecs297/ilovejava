@@ -38,7 +38,7 @@ public class ThreadServiceImp implements ThreadService {
     @Override
     public void delete(Thread thread, User user) throws PermissionLevelException {
         if (!user.isAdmin() && !user.equals(thread.getEntry().getAuthor())) {
-            throw new PermissionLevelException();
+            throw new PermissionLevelException("You don't have permission to delete this thread");
         }
         thread.setRemoved(true);
         threadDao.update(thread);
@@ -47,7 +47,7 @@ public class ThreadServiceImp implements ThreadService {
     @Override
     public void update(Thread thread, User user) throws PermissionLevelException {
         if (!user.isAdmin() && !user.equals(thread.getEntry().getAuthor())) {
-            throw new PermissionLevelException();
+            throw new PermissionLevelException("You don't have the permission to update this thread");
         }
         threadDao.update(thread);
     }
@@ -58,18 +58,46 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
-    public List<Thread> getAllByTag(String tag, int page, int size) {
-        return threadDao.getAllByTag(tag, page, size);
+    public List<Thread> getAll(int page, int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && user.isAdmin()) {
+            return threadDao.getAll(page, size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+        return threadDao.getAll(page, size);
     }
 
     @Override
-    public List<Thread> getAllByUser(UUID userId, int page, int size) {
-        return threadDao.getAllByUser(userId, page, size);
+    public List<Thread> getAllByTag(String tag, int page, int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && user.isAdmin()) {
+            return threadDao.getAllByTag(tag, page, size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+
+        return threadDao.getAllByTag(tag, page, size, false);
     }
 
     @Override
-    public List<Thread> getAllByUser(String username, int page, int size) {
-        return threadDao.getAllByUser(username, page, size);
+    public List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && (user.isAdmin() || user.getId().equals(userId))) {
+            return threadDao.getAllByUser(userId, page, size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+
+        return threadDao.getAllByUser(userId, page, size, false);
+    }
+
+    @Override
+    public List<Thread> getAllByUser(String username, int page, int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && (user.isAdmin() || user.getUsername().equals(username))) {
+            return threadDao.getAllByUser(username, page, size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+
+        return threadDao.getAllByUser(username, page, size, false);
     }
 
     @Override

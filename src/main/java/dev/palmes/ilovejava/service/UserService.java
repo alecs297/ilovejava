@@ -43,9 +43,11 @@ public interface UserService {
      *
      * @param user           The user to update
      * @param userRequesting The user requesting the update
-     * @throws PermissionLevelException User is not an admin
+     * @throws AlreadyExistException    Another user already uses these credentials
+     * @throws InvalidFormatException   Format is not correct
+     * @throws PermissionLevelException The User did not confirm his authority on the account with the oldPassword
      */
-    void update(User user, User userRequesting) throws PermissionLevelException;
+    void update(User user, User userRequesting, String originalPassword) throws PermissionLevelException, InvalidFormatException, AlreadyExistException;
 
     /**
      * Find a user by its username
@@ -89,4 +91,15 @@ public interface UserService {
      * @return List of users
      */
     List<User> getAll(int page, int size);
+
+
+    /**
+     * Get the user with matching the credentials are correct
+     *
+     * @param login    Email or Username of the user
+     * @param password Password of the user
+     * @return User matching the credentials
+     * @throws NotFoundException User doesn't exist
+     */
+    User getUserFromCredentials(String login, String password) throws NotFoundException;
 }

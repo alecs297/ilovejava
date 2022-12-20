@@ -30,13 +30,13 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void save(User user, String originalPassword) throws AlreadyExistException, InvalidFormatException {
         if (userDao.findByUsername(user.getUsername()) != null) {
-            throw new AlreadyExistException("Username already exist");
+            throw new AlreadyExistException("Username already exists");
         }
         if (!checkUsername(user.getUsername())) {
             throw new InvalidFormatException("Username is not valid");
         }
         if (userDao.findByEmail(user.getEmail()) != null) {
-            throw new AlreadyExistException("Email already exist");
+            throw new AlreadyExistException("Email already exists");
         }
         if (!checkEmail(user.getEmail())) {
             throw new InvalidFormatException("Email is not valid");
@@ -53,31 +53,34 @@ public class UserServiceImp implements UserService {
      * Check if the username is valid
      * Username is valid if it contains only letters and numbers and "_"
      * and it's length is between 4 and 16
+     *
      * @param username Username to check
      * @return true if the username is valid
      */
     private boolean checkUsername(String username) {
-        return username != null &&  username.matches("^[a-zA-Z0-9_]{4,16}$");
+        return username != null && username.matches("^[a-zA-Z0-9_]{4,16}$");
     }
 
     /**
      * Check if the email is valid
+     *
      * @param email Email to check
      * @return true if the email is valid
      */
     private boolean checkEmail(String email) {
-        return email != null &&  email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+        return email != null && email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
     }
 
     /**
      * Check if the password is valid
      * Password is valid if it has at least 8 characters, one uppercase, one lowercase
      * one number and one special character
+     *
      * @param password Password to check
      * @return true if the password is valid
      */
     private boolean checkPassword(String password) {
-        return password != null &&  password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+        return password != null && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
     }
 
     @Transactional
@@ -89,10 +92,45 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional
-    public void update(User user, User userRequesting) throws PermissionLevelException {
+    public void update(User user, User userRequesting, String originalPassword) throws PermissionLevelException, InvalidFormatException, AlreadyExistException {
         if (!userRequesting.isAdmin() && !userRequesting.equals(user)) {
             throw new PermissionLevelException();
         }
+
+        // Check original password if not admin or if admin and self editing
+        if (!user.isAdmin() || user.getId().equals(userRequesting.getId())) {
+            if (!new BCryptPasswordEncoder().matches(originalPassword, user.getPassword())) {
+                throw new InvalidFormatException("Original password is not valid");
+            }
+        }
+
+        // New password
+        if (!user.getPassword().isBlank()) {
+            if (!checkPassword(user.getPassword())) {
+                throw new InvalidFormatException("Password is not valid");
+            }
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
+
+        if (!user.getEmail().isBlank()) {
+            if (!checkEmail(user.getEmail())) {
+                throw new InvalidFormatException("Email is not valid");
+            }
+            if (userDao.findByEmail(user.getEmail()) != null) {
+                throw new AlreadyExistException("Email already exists");
+            }
+        }
+
+        if (!user.getUsername().isBlank()) {
+            if (!checkUsername(user.getUsername())) {
+                throw new InvalidFormatException("Username is not valid");
+            }
+            if (userDao.findByUsername(user.getUsername()) != null) {
+                throw new AlreadyExistException("Email already exists");
+            }
+        }
+
+        // Everything is valid, save it
         userDao.update(user);
     }
 
@@ -121,5 +159,26 @@ public class UserServiceImp implements UserService {
     @Transactional
     public List<User> getAll(int page, int size) {
         return userDao.getAll(page, size);
+    }
+
+    @Transactional
+    public User getUserFromCredentials(String login, String password) throws NotFoundException {
+        User user;
+
+        Optional<User> result = findByEmail(login);
+        if (result.isPresent()) {
+            user = result.get();
+        } else {
+            result = findByUsername(login);
+            if (result.isPresent()) {
+                user = result.get();
+            } else {
+                throw new NotFoundException();
+            }
+        }
+        if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+            throw new NotFoundException();
+        }
+        return user;
     }
 }

@@ -7,7 +7,7 @@
   <div class="w-full lg:w-1/2 lg:max-w-screen-2xl place-self-center overflow-x-scroll">
     <h1 class="text-8xl lg:text-5xl font-bold mt-8">Start a new thread</h1>
     <p class="text-5xl lg:text-2xl mb-12">Remember to check out our <a class="underline text-java-pink" href="/rules" referrerpolicy="no-referrer" target="_blank">rules</a> before posting.</p>
-    <form class="w-full" action="/new" method="POST">
+    <form class="w-full" action="/threads" method="POST">
       <input class="block w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}" id="title" name="title" type="text" placeholder="Title" />
       <label class="block text-slate-400 text-4xl lg:text-sm px-1 mb-3" for="title">Make it clear and concise</label>
       <textarea class="block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}" id="content" name="content" placeholder="What's on your mind ?"></textarea>

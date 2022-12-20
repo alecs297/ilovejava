@@ -24,8 +24,10 @@ public class TagDaoImp implements TagDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Tag> getAll(int page, int size) {
-        // TODO: Implement pagination
-        return sessionFactory.getCurrentSession().createQuery("from Tag").list();
+        return sessionFactory.getCurrentSession().createQuery("from Tag")
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .list();
     }
 
     @Override
@@ -46,7 +48,9 @@ public class TagDaoImp implements TagDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Tag> getPublicTags(int page, int size) {
-        // TODO: Implement pagination
-        return sessionFactory.getCurrentSession().createQuery("from Tag where locked = false").list();
+        return sessionFactory.getCurrentSession().createQuery("from Tag where locked = false")
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .list();
     }
 }

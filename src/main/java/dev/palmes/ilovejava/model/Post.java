@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -38,6 +39,10 @@ public class Post {
 
     @ManyToOne
     private Post parent;
+
+    @OneToMany
+    @OrderBy("creationDate ASC")
+    private List<Post> children;
 
     @ManyToOne
     private Thread thread;
@@ -107,6 +112,14 @@ public class Post {
 
     public void setParent(Post parent) {
         this.parent = parent;
+    }
+
+    public List<Post> getChildren() {
+        return children;
+    }
+
+    public void addChildren(Post children) {
+        this.children.add(children);
     }
 
     public Date getCreationDate() {

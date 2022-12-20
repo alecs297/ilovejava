@@ -60,11 +60,11 @@ public class UserController {
      *          If user is already logged in, return to "/".
      *      </li>
      *      <li>
-     *          In case of wrong login information, redirect user to login
-     *          page with information on what went wrong.
+     *          On successful login redirect user to "/".
      *      </li>
      *      <li>
-     *          On successful login redirect user to "/".
+     *          In case of wrong login information, redirect user to login
+     *          page with information on what went wrong.
      *      </li>
      * </ul>
      */
@@ -73,31 +73,16 @@ public class UserController {
         if (session.getAttribute("user") != null) {
             return "redirect:/";
         }
-        User user;
 
         try {
-            Optional<User> result = userService.findByEmail(login);
-            if (result.isPresent()) {
-                user = result.get();
-            } else {
-                result = userService.findByUsername(login);
-                if (result.isPresent()) {
-                    user = result.get();
-                } else {
-                    throw new NotFoundException();
-                }
-            }
-            if (new BCryptPasswordEncoder().matches(password, user.getPassword())) {
-                session.setAttribute("user", user);
-                return "redirect:/";
-            } else {
-                throw new NotFoundException();
-            }
+            User user = userService.getUserFromCredentials(login, password);
+            session.setAttribute("user", user);
+            return "redirect:/";
         } catch (NotFoundException ex) {
             model.addAttribute("error", "Wrong credentials");
             model.addAttribute("login", login);
+            return "account/login";
         }
-        return "account/login";
     }
 
     /**

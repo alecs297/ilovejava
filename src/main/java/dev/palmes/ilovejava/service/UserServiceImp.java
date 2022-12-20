@@ -8,7 +8,9 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -30,13 +32,13 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void save(User user, String originalPassword) throws AlreadyExistException, InvalidFormatException {
         if (userDao.findByUsername(user.getUsername()) != null) {
-            throw new AlreadyExistException("Username already exist");
+            throw new AlreadyExistException("Username already exists");
         }
         if (!checkUsername(user.getUsername())) {
             throw new InvalidFormatException("Username is not valid");
         }
         if (userDao.findByEmail(user.getEmail()) != null) {
-            throw new AlreadyExistException("Email already exist");
+            throw new AlreadyExistException("Email already exists");
         }
         if (!checkEmail(user.getEmail())) {
             throw new InvalidFormatException("Email is not valid");
@@ -121,5 +123,26 @@ public class UserServiceImp implements UserService {
     @Transactional
     public List<User> getAll(int page, int size) {
         return userDao.getAll(page, size);
+    }
+
+    @Transactional
+    public User getUserFromCredentials(String login, String password) throws NotFoundException {
+        User user;
+
+        Optional<User> result = findByEmail(login);
+        if (result.isPresent()) {
+            user = result.get();
+        } else {
+            result = findByUsername(login);
+            if (result.isPresent()) {
+                user = result.get();
+            } else {
+                throw new NotFoundException();
+            }
+        }
+        if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+            throw new NotFoundException();
+        }
+        return user;
     }
 }

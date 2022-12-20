@@ -4,7 +4,7 @@
 <body class="overflow-x-hidden">
 <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
 
-<div class="w-screen px-16 h-[85vh] grid">
+<div class="w-screen px-16 min-h-[85vh] grid">
   <form class="w-full text-4xl lg:text-base lg:w-1/2 lg:max-w-screen-sm place-self-center space-y-8 lg:space-y-3" method="post" action="/login">
     <div class="my-16">
       <h1 class="text-8xl lg:text-5xl font-black tracking-tight">Welcome back !</h1>

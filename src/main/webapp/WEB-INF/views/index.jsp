@@ -4,7 +4,7 @@
     <body class="overflow-x-hidden">
         <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
 
-        <div class="w-screen px-16 h-[90vh] break-words grid">
+        <div class="w-screen px-16 min-h-[90vh] break-words grid">
             <div class="max-w-full place-self-center font-bold text-7xl lg:text-5xl">
                 <h1>Welcome to <span class="text-java-pink font-black">I Love Java</span></h1>
                 <h1>The open, <span class="text-java-blue font-black">Java</span> dedicated Forum</h1>

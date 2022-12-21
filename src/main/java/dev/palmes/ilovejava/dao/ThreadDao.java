@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.dao;
 
 import dev.palmes.ilovejava.model.Thread;
+import dev.palmes.ilovejava.model.User;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface ThreadDao extends Dao<Thread> {
      * @param removed If true, include removed threads
      * @return List of threads from user
      */
-    List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed);
+    List<Thread> getAllByUser(User user, int page, int size, boolean removed);
 
     /**
      * Get <em>size</em> threads from user

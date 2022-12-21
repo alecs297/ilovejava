@@ -92,7 +92,7 @@ public interface ThreadService {
      *                prevent from getting removed threads
      * @return List of threads
      */
-    List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed, User user) throws PermissionLevelException;
+    List<Thread> getAllByUser(User user, int page, int size, boolean removed, User currentUser) throws PermissionLevelException;
 
     /**
      * Get all threads that exist

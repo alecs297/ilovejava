@@ -2,6 +2,7 @@ package dev.palmes.ilovejava.dao;
 
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.Thread;
+import dev.palmes.ilovejava.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -82,20 +83,38 @@ public class ThreadDaoImp implements ThreadDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed) {
+    public List<Thread> getAllByUser(User user, int page, int size, boolean removed) {
+
+        CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
+        Root<Thread> result = query.from(Thread.class);
+        Join<Thread, Post> postJoin = result.join("posts", JoinType.INNER);
+
+        query.select(result).where(
+                builder.and(
+                        builder.equal(postJoin.get("author"), user),
+                        builder.and(
+                                builder.equal(result.get("removed"), false),
+                                builder.equal(result.get("removed"), removed)
+
+                        )
+                )
+        );
+
+        query.groupBy(result.get("id"));
+
         return sessionFactory.getCurrentSession()
-                .createQuery("from Thread where id = :userId and removed = false and removed = :removed")
-                .setParameter("userId", userId)
-                .setParameter("removed", removed)
+                .createQuery(query)
                 .setFirstResult(page * size)
                 .setMaxResults(size)
-                .list();
+                .getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Thread> getAllByUser(String username, int page, int size, boolean removed) {
-        return sessionFactory.getCurrentSession().createQuery("from Thread where Thread.entry.author.username = :username and removed = false and removed = :removed")
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Thread where entry.author.id = :username and removed = false and removed = :removed")
                 .setParameter("username", username)
                 .setParameter("removed", removed)
                 .setFirstResult(page * size)

@@ -79,14 +79,14 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
-    public List<Thread> getAllByUser(UUID userId, int page, int size, boolean removed, User user) throws PermissionLevelException {
-        if (user != null && (user.isAdmin() || user.getId().equals(userId))) {
-            return threadDao.getAllByUser(userId, page, size, removed);
+    public List<Thread> getAllByUser(User user, int page, int size, boolean removed, User currentUser) throws PermissionLevelException {
+        if (currentUser != null && (currentUser.isAdmin() || currentUser.getId().equals(user.getId()))) {
+            return threadDao.getAllByUser(user, page, size, removed);
         } else if (removed) {
             throw new PermissionLevelException("You don't have permission to see removed threads");
         }
 
-        return threadDao.getAllByUser(userId, page, size, false);
+        return threadDao.getAllByUser(user, page, size, false);
     }
 
     @Override

@@ -21,7 +21,8 @@
         </label>
         <span class="inline-block text-4xl lg:text-2xl">Preview Markdown</span>
       </div>
-      <button disabled class="w-full mt-4 text-5xl lg:text-lg block px-8 py-6 lg:py-3 rounded-lg lg:rounded-lg text-background-default ${empty error ? "bg-java-blue" : "bg-java-pink"}" type="submit">${empty error ? "Create thread" : "Wrong credentials"}</button>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+      <button class="w-full mt-4 text-5xl lg:text-lg block px-8 py-6 lg:py-3 rounded-lg lg:rounded-lg text-background-default ${empty error ? "bg-java-blue" : "bg-java-pink"}" type="submit">${empty error ? "Create thread" : "Wrong credentials"}</button>
     </form>
   </div>
 </div>

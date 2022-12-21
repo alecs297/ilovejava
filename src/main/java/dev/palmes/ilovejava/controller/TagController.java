@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class TagController {
@@ -104,5 +105,25 @@ public class TagController {
         }
 
         return "redirect:/explore";
+    }
+
+    /**
+     * Get - Fetches all the public tags in checkboxes (themselves in a form)
+     *
+     * @return An HTML form containing a checkbox for each public tag
+     */
+    @GetMapping("/fetch-tags")
+    @ResponseBody
+    public String fetchPublicTags(Model model) {
+        /*  If we want te user to choose how many tags he can see :
+        int page = (int) model.getAttribute("page");
+        int size = (int) model.getAttribute("size");
+            But by default :
+        */
+        int page = 0;
+        int size = 10;
+        List<Tag> tags = tagService.getPublicTags(page, size);
+        model.addAttribute("tags", tags);
+        return "content/fetch_tags";
     }
 }

@@ -1,6 +1,5 @@
 package dev.palmes.ilovejava.controller;
 
-import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.stereotype.Controller;
@@ -32,25 +31,11 @@ public class ContentController {
      */
     @GetMapping("/explore")
     public String explore(HttpServletRequest request) {
-        String content = "";
 
-        try {
-            List<Thread> threads = threadService.getAll(0, 10);
-            if (threads.size() == 0) {
-                throw new NotFoundException();
-            }
-            content += "[DBG] - Threads fetched : " + threads.size() + "<br>";
-            for (Thread thread : threads) {
-                content += thread.getTitle() + "<br>";
-            }
-        } catch (NullPointerException e) {
-            content = "<h1>An error occurred while fetching the threads.</h1>";
-        } catch (NotFoundException e) {
-            content = "<h1>No thread found.</h1>";
-        }
+        List<Thread> threads = threadService.getAll(0, 10);
 
-        request.setAttribute("content", content);
-        return "content/posts";
+        request.setAttribute("threads", threads);
+        return "content/explore";
     }
 
     /**
@@ -61,25 +46,10 @@ public class ContentController {
      */
     @GetMapping("/trending")
     public String trending(HttpServletRequest request) {
-        String content = "";
+        List<Thread> threads = threadService.listByPopular(0, 10);
 
-        try {
-            List<Thread> threads = threadService.listByPopular(0, 10);
-            if (threads.size() == 0) {
-                throw new NotFoundException();
-            }
-            content += "[DBG] - Threads fetched : " + threads.size() + "<br>";
-            for (Thread thread : threads) {
-                content += thread.getTitle() + "<br>";
-            }
-        } catch (NullPointerException e) {
-            content = "<h1>An error occurred while fetching the threads.</h1>";
-        } catch (NotFoundException e) {
-            content = "<h1>No thread found.</h1>";
-        }
-
-        request.setAttribute("content", content);
-        return "content/posts";
+        request.setAttribute("threads", threads);
+        return "content/trending";
     }
 
     /**
@@ -90,24 +60,9 @@ public class ContentController {
      */
     @GetMapping("/recent")
     public String recent(HttpServletRequest request) {
-        String content = "";
+        List<Thread> threads = threadService.listByRecent(0, 10);
 
-        try {
-            List<Thread> threads = threadService.listByRecent(0, 10);
-            if (threads.size() == 0) {
-                throw new NotFoundException();
-            }
-            content += "[DBG] - Threads fetched : " + threads.size() + "<br>";
-            for (Thread thread : threads) {
-                content += thread.getTitle() + "<br>";
-            }
-        } catch (NullPointerException e) {
-            content = "<h1>An error occurred while fetching the threads.</h1>";
-        } catch (NotFoundException e) {
-            content = "<h1>No thread found.</h1>";
-        }
-
-        request.setAttribute("content", content);
-        return "content/posts";
+        request.setAttribute("threads", threads);
+        return "content/recent";
     }
 }

@@ -2,7 +2,6 @@ package dev.palmes.ilovejava.dao;
 
 import dev.palmes.ilovejava.model.User;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,8 +12,4 @@ public interface UserDao extends Dao<User> {
     User findByUsername(String username);
 
     User findByEmail(String email);
-
-    List<User> listByRecent(int page, int size);
-
-    List<User> listByPopular(int page, int size);
 }

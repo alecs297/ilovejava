@@ -56,14 +56,4 @@ public class UserDaoImp implements UserDao {
                 .setParameter("email", email)
                 .uniqueResult();
     }
-
-    @Override
-    public List<User> listByRecent(int page, int size) {
-        return null; // TODO
-    }
-
-    @Override
-    public List<User> listByPopular(int page, int size) {
-        return null; // TODO
-    }
 }

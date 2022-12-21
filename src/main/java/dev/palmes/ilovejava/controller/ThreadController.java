@@ -34,7 +34,6 @@ public class ThreadController {
      */
     @GetMapping("/threads/{id}")
     public ModelAndView thread(@PathVariable String id, Model model, HttpSession session) {
-        //TODO: Change view path
         ModelAndView modelAndView = new ModelAndView("content/thread");
 
         UUID uuid = UUID.fromString(id);

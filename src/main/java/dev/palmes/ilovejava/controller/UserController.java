@@ -224,7 +224,6 @@ public class UserController {
             } catch (PermissionLevelException e) {
                 model.addAttribute("error", e.getMessage());
             }
-            // TODO: Change view name
             return "content/user";
         } else {
 
@@ -259,7 +258,6 @@ public class UserController {
             } catch (PermissionLevelException e) {
                 model.addAttribute("error", e.getMessage());
             }
-            // TODO: Change view name
             return "content/user";
         } else {
 

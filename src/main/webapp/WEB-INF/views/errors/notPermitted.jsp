@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <jsp:include page="/WEB-INF/includes/head.jsp"/>
-    <body class="min-h-screen flex flex-col">
-        <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
-        <div class="grow w-screen text-center">
-            <img class="mx-auto pointer-events-none w-2/3 lg:w-1/4 aspect-square" src="${pageContext.request.contextPath}/static/images/has-bean.png" alt="Content not found error icon"/>
-            <h1 class="my-16 lg:my-8 text-5xl lg:text-xl font-bold">${empty error ? "Sorry, you don't have the permission to do that" : error}</h1>
-            <span class="text-4xl lg:text-base">You can always go <a class="underline" href="/">home</a> or <a class="underline" href="/explore">explore</a> new content</span>
-        </div>
-        <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-    </body>
+<jsp:include page="/WEB-INF/includes/head.jsp"/>
+<body class="min-h-screen flex flex-col">
+<jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
+<div class="grow w-screen text-center">
+    <img class="mx-auto pointer-events-none w-2/3 lg:w-1/4 aspect-square"
+         src="${pageContext.request.contextPath}/static/images/has-bean.png" alt="Content not found error icon"/>
+    <h1 class="my-16 lg:my-8 text-5xl lg:text-xl font-bold"><%= pageContext.getAttribute("error").toString().isEmpty() ? "Sorry, you don't have the permission to do that" : pageContext.getAttribute("error").toString() %>
+    </h1>
+    <span class="text-4xl lg:text-base">You can always go <a class="underline"
+                                                             href="${pageContext.request.contextPath}/">home</a> or <a
+            class="underline"
+            href="/explore">explore</a> new content
+    </span>
+</div>
+<jsp:include page="/WEB-INF/includes/footer.jsp"/>
+</body>
 </html>

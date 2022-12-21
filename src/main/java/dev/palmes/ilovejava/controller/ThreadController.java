@@ -120,7 +120,7 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads/{id}")
-    public String newPost(@PathVariable String id, String content, HttpServletResponse response, HttpSession session) {
+    public String newPost(@PathVariable String id, String content, HttpServletResponse response, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
@@ -128,6 +128,13 @@ public class ThreadController {
         try {
             System.out.println("ID: " + id);
             Post parent = threadService.get(UUID.fromString(id)).getEntry();
+
+            if (content.length() > Post.MAX_CONTENT_SIZE) {
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                model.addAttribute("error", "Content is too long");
+                return "redirect:/threads/" + id;
+            }
+
             Post post = new Post();
             post.setContent(content);
             post.setAuthor(user);

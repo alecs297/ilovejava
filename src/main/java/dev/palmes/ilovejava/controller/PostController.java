@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,19 @@ public class PostController {
     }
 
     /**
+     * GET - Post page mapping
+     */
+    @GetMapping("/posts/{id}")
+    public ModelAndView post(@PathVariable UUID id, Model model, HttpSession session) {
+        try {
+            Post post = postService.get(id);
+            return new ModelAndView(new RedirectView("/threads/" + post.getThread().getId() + "#" + id));
+        } catch (NotFoundException | NotAvailableException e) {
+            return new ModelAndView("errors/notAvailable");
+        }
+    }
+
+    /**
      * POST - Post a reply to a post
      * <p>
      * Create a new post and set the parent to the post that is being replied to
@@ -31,7 +46,7 @@ public class PostController {
      * </p>
      */
     @PostMapping("/posts/{id}")
-    public String replyPost(@PathVariable String id, @RequestParam("content") String content, HttpServletResponse response, HttpSession session) {
+    public String replyPost(@PathVariable String id, @RequestParam("content") String content, HttpServletResponse response, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -46,6 +61,12 @@ public class PostController {
         } catch (NotFoundException | NotAvailableException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return "redirect:/explore";
+        }
+
+        if (content.length() > Post.MAX_CONTENT_SIZE) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            model.addAttribute("error", "Content is too long");
+            return "redirect:/posts/" + id;
         }
 
         Post post = new Post();
@@ -74,6 +95,12 @@ public class PostController {
         }
 
         UUID uuid = UUID.fromString(id);
+
+        if (content.length() > Post.MAX_CONTENT_SIZE) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            model.addAttribute("error", "Content is too long");
+            return "redirect:/posts/" + id;
+        }
 
         try {
             Post post = new Post();

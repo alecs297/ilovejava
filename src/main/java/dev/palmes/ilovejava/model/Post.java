@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+
 @Entity
 public class Post {
+    public static final int MAX_CONTENT_SIZE = 10000;
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -26,7 +29,7 @@ public class Post {
     private User author;
 
 
-    @Column(length = 8192)
+    @Column(length = MAX_CONTENT_SIZE)
     private String content;
 
     @CreationTimestamp

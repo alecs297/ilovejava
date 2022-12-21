@@ -3,7 +3,7 @@
 <jsp:include page="/WEB-INF/includes/head.jsp"/>
 <body class="min-h-screen flex flex-col">
 <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
-<div class="grow w-screen text-center my-48 lg:my-28">
+<div class="grow w-screen text-center">
     <img class="mx-auto pointer-events-none w-2/3 lg:w-1/4 aspect-square"
          src="${pageContext.request.contextPath}/static/images/has-bean.png"
          alt="Content not found error icon"/>

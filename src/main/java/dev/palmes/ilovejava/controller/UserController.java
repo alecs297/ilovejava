@@ -212,7 +212,7 @@ public class UserController {
     /**
      * GET - User Thread list
      */
-    @GetMapping("/user/{username}")
+    @GetMapping("/users/{username}")
     public String userThreads(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
@@ -240,13 +240,13 @@ public class UserController {
             return ("redirect:/login");
         }
 
-        return ("redirect:/user/" + ((User) session.getAttribute("user")).getUsername());
+        return ("redirect:/users/" + ((User) session.getAttribute("user")).getUsername());
     }
 
     /**
      * GET - User posts list
      */
-    @GetMapping("/user/{username}/posts")
+    @GetMapping("/users/{username}/posts")
     public String userPosts(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);

@@ -3,6 +3,7 @@ package dev.palmes.ilovejava.controller;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ public class ContentController {
     }
 
     @GetMapping("/new")
-    public String newpost(HttpSession session) {
-        session.setAttribute("error", "");
+    public String newpost(Model model, HttpSession session) {
+        model.addAttribute("error", "");
         return session.getAttribute("user") != null ? "content/new" : "redirect:/login";
     }
 

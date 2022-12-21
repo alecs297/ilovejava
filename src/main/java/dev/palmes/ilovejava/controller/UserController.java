@@ -217,8 +217,7 @@ public class UserController {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            System.out.println(user.get().getId());
-
+            model.addAttribute("user", user.get().getSafeUser());
             try {
                 model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
             } catch (PermissionLevelException e) {
@@ -251,8 +250,8 @@ public class UserController {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            System.out.println(user.get().getId());
 
+            model.addAttribute("user", user.get().getSafeUser());
             try {
                 model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
             } catch (PermissionLevelException e) {

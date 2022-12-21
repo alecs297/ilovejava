@@ -78,4 +78,14 @@ public class User {
     public void setPoints(Integer points) {
         this.points = points;
     }
+
+    public User getSafeUser() {
+        User safeUser = new User();
+        safeUser.setId(this.getId());
+        safeUser.setUsername(this.getUsername());
+        safeUser.setEmail(this.getEmail());
+        safeUser.setAdmin(this.isAdmin());
+        safeUser.setPoints(this.getPoints());
+        return safeUser;
+    }
 }

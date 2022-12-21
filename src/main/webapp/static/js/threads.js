@@ -35,7 +35,7 @@ function showReplyBox(event, postId) {
     text.className = "block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded content";
 
     let button = document.createElement("button");
-    button.className = "w-full mt-2 block px-8 underline decoration-wavy decoration-java-blue underline-offset-8";
+    button.className = "w-full text-left mt-2 block underline decoration-java-blue underline-offset-8";
     button.type = "submit";
     button.textContent = "Send"
 

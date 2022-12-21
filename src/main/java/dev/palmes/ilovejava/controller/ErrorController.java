@@ -8,6 +8,6 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     @RequestMapping("/error")
     public String handleError() {
         //do something like logging
-        return "/errors/notAvailable";
+        return "errors/notAvailable";
     }
 }

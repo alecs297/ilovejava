@@ -9,10 +9,7 @@ import dev.palmes.ilovejava.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,7 +31,7 @@ public class PostController {
      * </p>
      */
     @PostMapping("/posts/{id}")
-    public String replyPost(@PathVariable String id, String content, HttpServletResponse response, HttpSession session) {
+    public String replyPost(@PathVariable String id, @RequestParam("content") String content, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

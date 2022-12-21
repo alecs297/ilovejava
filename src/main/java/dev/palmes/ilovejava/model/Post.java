@@ -25,6 +25,8 @@ public class Post {
     @JoinColumn(nullable = false)
     private User author;
 
+
+    @Column(length = 8192)
     private String content;
 
     @CreationTimestamp
@@ -95,7 +97,7 @@ public class Post {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.content = "\n" + content;
     }
 
     public boolean isRemoved() {
@@ -111,6 +113,7 @@ public class Post {
     }
 
     public void setParent(Post parent) {
+        parent.addChildren(this);
         this.parent = parent;
     }
 

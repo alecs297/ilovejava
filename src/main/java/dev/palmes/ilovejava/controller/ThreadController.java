@@ -120,24 +120,29 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads/{id}")
-    public String newPost(Post parent, String content, HttpServletResponse response, HttpSession session) {
+    public String newPost(@PathVariable String id, String content, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        if (parent == null) {
-            return "redirect:/explore";
+        try {
+            System.out.println("ID: " + id);
+            Post parent = threadService.get(UUID.fromString(id)).getEntry();
+            Post post = new Post();
+            post.setContent(content);
+            post.setAuthor(user);
+            post.setParent(parent);
+            post.setThread(parent.getThread());
+
+            postService.save(post);
+
+            return "redirect:/threads/" + parent.getThread().getId();
+        } catch (NotFoundException | NotAvailableException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return "errors/notAvailable";
         }
 
-        Post post = new Post();
-        post.setContent(content);
-        post.setAuthor(user);
-        post.setParent(parent);
-        post.setThread(parent.getThread());
 
-        postService.save(post);
-
-        return "redirect:/threads/" + parent.getThread().getId();
     }
 
 

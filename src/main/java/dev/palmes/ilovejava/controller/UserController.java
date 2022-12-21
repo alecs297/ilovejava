@@ -210,23 +210,57 @@ public class UserController {
     }
 
     /**
-     * GET - User posts list
+     * GET - User Thread list
      */
     @GetMapping("/user/{username}")
-    public String userPosts(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
+    public String userThreads(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
-
         if (user.isPresent()) {
+            System.out.println(user.get().getId());
 
-            model.addAttribute("user", user.get());
             try {
-                model.addAttribute("threads", threadService.getAllByUser(user.get().getId(), 0, 10, removed, currentUser));
+                model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
             } catch (PermissionLevelException e) {
                 model.addAttribute("error", e.getMessage());
             }
             // TODO: Change view name
-            return "user/posts";
+            return "content/user";
+        } else {
+
+            return "errors/notAvailable";
+        }
+    }
+
+    /**
+     * GET - Profile page mapping
+     */
+    @GetMapping("/profile")
+    public String profile(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return ("redirect:/login");
+        }
+
+        return ("redirect:/user/" + ((User) session.getAttribute("user")).getUsername());
+    }
+
+    /**
+     * GET - User posts list
+     */
+    @GetMapping("/user/{username}/posts")
+    public String userPosts(@PathVariable String username, @RequestParam(required = false, defaultValue = "false") boolean removed, Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        Optional<User> user = userService.findByUsername(username);
+        if (user.isPresent()) {
+            System.out.println(user.get().getId());
+
+            try {
+                model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
+            } catch (PermissionLevelException e) {
+                model.addAttribute("error", e.getMessage());
+            }
+            // TODO: Change view name
+            return "content/user";
         } else {
 
             return "errors/notAvailable";

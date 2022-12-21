@@ -149,7 +149,7 @@ public class UserController {
      * If user is not logged in, redirect to "/login"
      * </p>
      */
-    @GetMapping("/edit-account")
+    @GetMapping("/account")
     public String editAccount(HttpSession session) {
         if (session.getAttribute("user") == null) {
             return ("redirect:/login");
@@ -173,7 +173,7 @@ public class UserController {
      *     </li>
      * </ul>
      */
-    @PutMapping("/edit-account")
+    @PutMapping("/account")
     public String editAccount(
             String originalPassword,
             @RequestParam(required = false, defaultValue = "") String email,

@@ -20,6 +20,7 @@ public class ContentController {
 
     @GetMapping("/new")
     public String newpost(HttpSession session) {
+        session.setAttribute("error", "");
         return session.getAttribute("user") != null ? "content/new" : "redirect:/login";
     }
 

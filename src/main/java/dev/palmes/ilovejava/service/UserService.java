@@ -64,25 +64,7 @@ public interface UserService {
      * @return The user
      */
     Optional<User> findByEmail(String email);
-
-    /**
-     * Get all users that exist sorted by recent
-     *
-     * @param page Page number
-     * @param size Number of users per page
-     * @return List of users
-     */
-    List<User> listByRecent(int page, int size);
-
-    /**
-     * Get all users that exist sorted by popularity
-     *
-     * @param page Page number
-     * @param size Number of users per page
-     * @return List of users
-     */
-    List<User> listByPopular(int page, int size);
-
+    
     /**
      * Get all users that exist
      *

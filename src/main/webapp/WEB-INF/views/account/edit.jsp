@@ -1,4 +1,4 @@
-<jsp:useBean id="user" scope="request" type="dev.palmes.ilovejava.model.User"/>
+<jsp:useBean id="user" scope="session" type="dev.palmes.ilovejava.model.User"/>
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/includes/head.jsp"/>

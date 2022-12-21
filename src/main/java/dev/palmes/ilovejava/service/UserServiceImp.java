@@ -145,16 +145,7 @@ public class UserServiceImp implements UserService {
         User user = userDao.findByEmail(email);
         return Optional.ofNullable(user);
     }
-
-    @Transactional
-    public List<User> listByRecent(int page, int size) {
-        return userDao.listByRecent(page, size);
-    }
-
-    @Transactional
-    public List<User> listByPopular(int page, int size) {
-        return userDao.listByPopular(page, size);
-    }
+    
 
     @Transactional
     public List<User> getAll(int page, int size) {

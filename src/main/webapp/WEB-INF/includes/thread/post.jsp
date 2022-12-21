@@ -6,11 +6,11 @@
         <a href="/users/${post.author.username}">[ ${post.author.username} ]</a>
     </span>
     <div class="border-l-2">
-        <div class="ml-4 content">
+        <div class="ml-4 content prose prose-xl w-full bg-slate-200 p-2 rounded-lg">
                 ${post.content}
         </div>
         <button class="w-full text-left ml-4 mt-2 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
-                onclick="showReplyBox(this,'${post.id}')">
+                id="reply-${post.id}">
             Reply
         </button>
         <div class="pl-2">

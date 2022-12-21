@@ -1,8 +1,14 @@
+<jsp:useBean id="thread" scope="request" type="dev.palmes.ilovejava.model.Thread"/>
+<jsp:useBean id="item" scope="request" type="dev.palmes.ilovejava.model.Tag"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <form>
     <c:forEach var="tag" items="${tags}">
-    <input type="checkbox" name="tag" value="${item.getId()}" <c:if test="${thread.getTags().contains(tag)}">checked</c:if> />
-        ${tag.getDisplayName()}<br>
+
+        <label>
+            <input type="checkbox" name="tag" value="${item.id}"
+                   <c:if test="${thread.tags.contains(tag)}">checked</c:if> />
+        </label>
+        ${tag.displayName}<br>
     </c:forEach>
 </form>
 ${dbg}

@@ -5,11 +5,11 @@
   <span class="inline-block">
     [
     <c:forEach var="tag" items="${thread.getTags()}">
-      <a class="text-java-pink text-xl lg:text-base" href="/expore/${tag.getId()}>">${tag.getDisplayName()}</a>
+      <a class="text-java-pink text-xl lg:text-base" href="/tags/${tag.getId()}>">${tag.getDisplayName()}</a>
     </c:forEach>
     ]
   </span>
-  <a class="font-bold inline-block" href="/thread/${thread.getId()}">${thread.getTitle()}</a>
-  <h2 class="text-slate-600 leading-none">Created on ${Moment.moment(thread.getEntry().getCreationDate()).format("dd/MM/YY hh:mm")} by <a class="text-java-blue" href="/user/${thread.getEntry().getAuthor().getUsername()}">${thread.getEntry().getAuthor().getUsername()}</a></h2>
-  <a class="w-full my-2 block text-slate-600" href="/thread/${thread.getId()}">${thread.getEntry().getContentSummary(100)}</a>
+  <a class="font-bold inline-block" href="/threads/${thread.getId()}">${thread.getTitle()}</a>
+  <h2 class="text-slate-600 leading-none">Created on ${Moment.moment(thread.getEntry().getCreationDate()).format("dd/MM/YY hh:mm")} by <a class="text-java-blue" href="/users/${thread.getEntry().getAuthor().getUsername()}">${thread.getEntry().getAuthor().getUsername()}</a></h2>
+  <a class="w-full my-2 block text-slate-600" href="/threads/${thread.getId()}">${thread.getEntry().getContentSummary(100)}</a>
 </div>

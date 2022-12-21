@@ -32,10 +32,10 @@ function showReplyBox(event, postId) {
     let text = document.createElement("textarea");
     text.name = "content";
     text.id = "text-" + postId;
-    text.className = "block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded content";
+    text.className = "block resize-none w-full px-4 py-4 lg:py-2 border-2 rounded content";
 
     let button = document.createElement("button");
-    button.className = "w-full mt-2 block px-8 underline decoration-wavy decoration-java-blue underline-offset-8";
+    button.className = "w-full mt-2 block text-4xl lg:text-base px-8 underline decoration-wavy decoration-java-blue underline-offset-4";
     button.type = "submit";
     button.textContent = "Send"
 
@@ -46,7 +46,7 @@ function showReplyBox(event, postId) {
     input.value = csrf.value;
 
     form.append(label, text, button, input);
-    form.classList.add("mx-4", "px-4", "border-l-2", "border-java-pink/80");
+    form.className = "ml-2 mb-2 lg:mb-4 px-4 border-l-2 border-java-pink/80";
 
     event.after(form);
 }

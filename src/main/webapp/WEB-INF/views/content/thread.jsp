@@ -12,14 +12,18 @@
 <%
     Thread thread = (Thread) request.getAttribute("thread");
 %>
-<div class="w-screen min-h-screen px-24 text-5xl lg:text-base grid mb-12">
-    <div class="w-full lg:w-1/2 lg:max-w-screen-2xl place-self-center">
-        <h1 class="text-8xl lg:text-5xl font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
+<div class="w-screen min-h-screen lg:px-24 text-5xl lg:text-base grid mb-12">
+    <div class="lg:w-1/2 lg:max-w-screen-2xl place-self-center">
+        <h1 class="text-8xl lg:text-5xl mt-4 lg:mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
         </h1>
         <input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <jsp:include page="/WEB-INF/includes/thread/taglist.jsp"/>
-        <jsp:include page="/WEB-INF/includes/thread/date-author.jsp"/>
+        <div class="text-2xl lg:text-base mb-4 lg:mb-2">
+            <jsp:include page="/WEB-INF/includes/thread/date-author.jsp"/>
+        </div>
+        <div class="text-4xl lg:text-xl">
+            <jsp:include page="/WEB-INF/includes/thread/taglist.jsp"/>
+        </div>
         <div class="my-2">
             <%
                 List<Post> posts = new ArrayList<>();

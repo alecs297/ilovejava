@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/includes/head.jsp"/>
-<body>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
 <jsp:include page="/WEB-INF/includes/navbar/navbar.jsp"/>
 <%
     Thread thread = (Thread) request.getAttribute("thread");
 %>
-<div class="w-screen min-h-screen lg:px-24 text-5xl lg:text-base grid mb-12">
+<div class="grow w-screen min-h-screen lg:px-24 text-5xl lg:text-base grid mb-12">
     <div class="lg:w-1/2 lg:max-w-screen-2xl place-self-center">
         <h1 class="text-8xl lg:text-5xl mt-4 lg:mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
@@ -35,6 +35,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-<script src="/static/js/threads.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/threads.js"></script>
 </body>
 </html>

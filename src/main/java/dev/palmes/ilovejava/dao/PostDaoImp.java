@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.dao;
 
 import dev.palmes.ilovejava.model.Post;
+import dev.palmes.ilovejava.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,14 @@ public class PostDaoImp implements PostDao {
     @Override
     public void delete(Post post) {
         sessionFactory.getCurrentSession().delete(post);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Post> getAllByUser(User user) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Post where author = :author")
+                .setParameter("author", user)
+                .list();
     }
 }

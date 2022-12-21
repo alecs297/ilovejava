@@ -5,6 +5,7 @@ import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.User;
+import dev.palmes.ilovejava.service.PostService;
 import dev.palmes.ilovejava.service.ThreadService;
 import dev.palmes.ilovejava.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,12 @@ public class UserController {
     private final UserService userService;
     private final ThreadService threadService;
 
-    public UserController(UserService userService, ThreadService threadService) {
+    private final PostService postService;
+
+    public UserController(UserService userService, ThreadService threadService, PostService postService) {
         this.userService = userService;
         this.threadService = threadService;
+        this.postService = postService;
     }
 
     /**
@@ -252,12 +256,9 @@ public class UserController {
         if (user.isPresent()) {
 
             model.addAttribute("user", user.get().getSafeUser());
-            try {
-                model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
-            } catch (PermissionLevelException e) {
-                model.addAttribute("error", e.getMessage());
-            }
-            return "content/user";
+            model.addAttribute("posts", postService.getAllByUser(user.get()));
+
+            return "content/user_posts";
         } else {
 
             return "errors/notAvailable";

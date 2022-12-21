@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.User;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
@@ -44,4 +45,6 @@ public interface PostService {
      * @param user The user requesting the update
      */
     void update(Post post, User user) throws PermissionLevelException;
+
+    List<Post> getAllByUser(User user);
 }

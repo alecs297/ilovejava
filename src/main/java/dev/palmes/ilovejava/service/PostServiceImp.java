@@ -8,6 +8,7 @@ import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -54,5 +55,10 @@ public class PostServiceImp implements PostService {
         } else {
             throw new PermissionLevelException();
         }
+    }
+
+    @Override
+    public List<Post> getAllByUser(User user) {
+        return postDao.getAllByUser(user);
     }
 }

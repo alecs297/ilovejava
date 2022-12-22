@@ -112,6 +112,7 @@ public class UserServiceImp implements UserService {
             if (userDao.findByEmail(email) != null) {
                 throw new AlreadyExistException("Email already used");
             }
+            user.setEmail(email);
         }
 
         if (!username.equals(user.getUsername())) {
@@ -121,6 +122,7 @@ public class UserServiceImp implements UserService {
             if (userDao.findByUsername(username) != null) {
                 throw new AlreadyExistException("Username already taken");
             }
+            user.setUsername(username);
         }
 
         // Everything is valid, save it

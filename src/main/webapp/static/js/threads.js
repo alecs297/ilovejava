@@ -5,6 +5,13 @@ const md = window.markdownit({
     breaks: true
 });
 
+function unescape(str) {
+    return str.replaceAll('&amp;', '&')
+        .replaceAll('&lt;', "<")
+        .replaceAll('&gt;', '>')
+        .replace(' ', '\u00a0s');
+}
+
 const contents = document.getElementsByClassName("content");
 const csrf = document.getElementById("csrf");
 
@@ -15,11 +22,8 @@ const csrf = document.getElementById("csrf");
 const codeblocks = document.querySelectorAll("pre > code");
 
 codeblocks.forEach(element => {
-    element.innerText = element.innerText
-        .replaceAll('&amp;', '&')
-        .replaceAll('&lt;', "<")
-        .replaceAll('&gt;', '>')
-        .replace(' ', '\u00a0s');
+    element.innerText = unescape(element.innerText)
+
 })
 
 document.querySelectorAll("[id^='reply-']").forEach(button => {
@@ -148,7 +152,7 @@ function showEditBox(editButton, postId) {
 
     content.classList.add("hidden");
     editButton.classList.add("hidden");
-    area.value = originalContent.innerHTML.trim();
+    area.value = unescape(originalContent.innerHTML).trim();
 
     if (window.areaHelper) window.areaHelper(area);
 

@@ -88,7 +88,7 @@ function showReplyBox(target, postId) {
     text.className = "block resize-none w-full px-4 py-4 lg:py-2 border-2 rounded content";
 
     let button = document.createElement("button");
-    button.className = "w-full mt-2 block text-4xl lg:text-base px-8 underline decoration-wavy decoration-java-blue underline-offset-4";
+    button.className = "w-full text-left text-4xl lg:text-base lg:ml-2 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2";
     button.type = "submit";
     button.textContent = "Send"
 

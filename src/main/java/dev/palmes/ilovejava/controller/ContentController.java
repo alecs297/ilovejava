@@ -40,7 +40,7 @@ public class ContentController {
      * </p>
      */
     @GetMapping("/explore")
-    public String explore(@RequestParam(defaultValue = "0") int page, @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed, HttpServletRequest request) {
+    public String explore(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
 
         try {

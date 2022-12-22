@@ -43,6 +43,7 @@ public class ThreadController {
 
         try {
             Thread thread = this.threadService.get(uuid, user);
+            model.addAttribute("pageTitle", thread.getTitle());
             model.addAttribute("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

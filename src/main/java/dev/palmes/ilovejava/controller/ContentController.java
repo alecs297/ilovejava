@@ -45,6 +45,7 @@ public class ContentController {
 
         try {
             List<Thread> threads = threadService.getAll(page, 10, removed, user);
+            request.setAttribute("pageTitle", "Explore");
             request.setAttribute("threads", threads);
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
@@ -60,10 +61,11 @@ public class ContentController {
      * Fetches the most popular posts and redirect to the "/explore" view
      * </p>
      */
-    @GetMapping("/trending")
+    @GetMapping("/top")
     public String trending(HttpServletRequest request) {
-        List<Thread> threads = threadService.listByPopular(0, 10);
+        List<Thread> threads = threadService.listByTop(0, 10);
 
+        request.setAttribute("pageTitle", "Top");
         request.setAttribute("threads", threads);
         return "content/explore";
     }
@@ -78,6 +80,7 @@ public class ContentController {
     public String recent(HttpServletRequest request) {
         List<Thread> threads = threadService.listByRecent(0, 10);
 
+        request.setAttribute("pageTitle", "Recent");
         request.setAttribute("threads", threads);
         return "content/explore";
     }

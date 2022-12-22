@@ -48,7 +48,11 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public void update(Post post, User user) throws PermissionLevelException {
+    public void update(Post post, User user) throws PermissionLevelException, NotAvailableException {
+        if (post.isRemoved()) {
+            throw new NotAvailableException();
+        }
+
         if (post.getAuthor().equals(user)) {
             post.setContent(HtmlUtils.htmlEscape(post.getContent()));
             postDao.update(post);

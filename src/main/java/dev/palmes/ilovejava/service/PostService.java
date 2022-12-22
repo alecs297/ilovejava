@@ -44,7 +44,7 @@ public interface PostService {
      * @param post Post to update
      * @param user The user requesting the update
      */
-    void update(Post post, User user) throws PermissionLevelException;
+    void update(Post post, User user) throws PermissionLevelException, NotAvailableException;
 
     List<Post> getAllByUser(User user);
 }

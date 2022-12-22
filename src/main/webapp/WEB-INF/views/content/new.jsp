@@ -40,7 +40,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/string.js/3.3.3/string.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/new.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/areahelper.js"></script>
 </body>

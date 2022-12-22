@@ -41,11 +41,11 @@ public interface UserService {
      * Update a user from the database, the user performing the
      * action need to be the user to update or an admin
      *
-     * @param user                      The user to update
-     * @param originalPassword          User original password
-     * @param newPassword               User new password (can be blank)
-     * @param email                     User email
-     * @param username                  User username
+     * @param user             The user to update
+     * @param originalPassword User original password
+     * @param newPassword      User new password (can be blank)
+     * @param email            User email
+     * @param username         User username
      * @throws AlreadyExistException    Another user already uses these credentials
      * @throws InvalidFormatException   Format is not correct
      * @throws PermissionLevelException The User did not confirm his authority on the account with the oldPassword
@@ -67,7 +67,7 @@ public interface UserService {
      * @return The user
      */
     Optional<User> findByEmail(String email);
-    
+
     /**
      * Get all users that exist
      *
@@ -87,4 +87,6 @@ public interface UserService {
      * @throws NotFoundException User doesn't exist
      */
     User getUserFromCredentials(String login, String password) throws NotFoundException;
+
+    int countUserVotes(User user);
 }

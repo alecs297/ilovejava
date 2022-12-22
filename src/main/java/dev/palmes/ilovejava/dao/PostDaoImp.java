@@ -48,6 +48,7 @@ public class PostDaoImp implements PostDao {
         sessionFactory.getCurrentSession().delete(post);
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
     public List<Post> getAllByUser(User user) {

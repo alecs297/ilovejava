@@ -100,7 +100,7 @@ public class PostController {
         try {
             post = this.postService.get(uuid);
             postService.toggleVote(post, user);
-            session.setAttribute("user", userService.get(user.getId()));
+            userService.countUserVotes(post.getAuthor());
             return post.getVotesCount() + "";
         } catch (NotFoundException | NotAvailableException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

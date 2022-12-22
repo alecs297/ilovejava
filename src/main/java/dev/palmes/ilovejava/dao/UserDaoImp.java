@@ -56,4 +56,12 @@ public class UserDaoImp implements UserDao {
                 .setParameter("email", email)
                 .uniqueResult();
     }
+
+    public int countUserVotes(User user) {
+        // Query the number of post where the user voted
+        return ((Long) sessionFactory.getCurrentSession()
+                .createQuery("select count(*) from Post where :user in elements(votes)")
+                .setParameter("user", user)
+                .uniqueResult()).intValue();
+    }
 }

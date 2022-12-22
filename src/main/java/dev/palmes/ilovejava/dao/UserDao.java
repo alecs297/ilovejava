@@ -12,4 +12,6 @@ public interface UserDao extends Dao<User> {
     User findByUsername(String username);
 
     User findByEmail(String email);
+
+    int countUserVotes(User user);
 }

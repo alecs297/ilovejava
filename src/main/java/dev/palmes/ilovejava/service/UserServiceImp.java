@@ -140,7 +140,7 @@ public class UserServiceImp implements UserService {
         User user = userDao.findByEmail(email);
         return Optional.ofNullable(user);
     }
-    
+
 
     @Transactional
     public List<User> getAll(int page, int size) {
@@ -166,5 +166,12 @@ public class UserServiceImp implements UserService {
             throw new NotFoundException();
         }
         return user;
+    }
+
+    public int countUserVotes(User user) {
+        user.setPoints(userDao.countUserVotes(user));
+        userDao.update(user);
+        return user.getPoints();
+
     }
 }

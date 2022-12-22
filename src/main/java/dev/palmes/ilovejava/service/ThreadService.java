@@ -1,5 +1,6 @@
 package dev.palmes.ilovejava.service;
 
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotAvailableException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
@@ -35,7 +36,7 @@ public interface ThreadService {
      *
      * @param thread The thread to create
      */
-    void save(Thread thread);
+    void save(Thread thread) throws InvalidFormatException;
 
     /**
      * Mark a thread a deleted, the user performing the

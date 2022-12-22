@@ -23,6 +23,12 @@ document.querySelectorAll("[id^='remove-']").forEach(button => {
     })
 })
 
+document.querySelectorAll("[id^='vote-']").forEach(button => {
+    button.addEventListener("click", async (e) => {
+        await vote(e.target, button.id.slice("vote-".length))
+    })
+})
+
 async function deletePost(postId) {
     if (!confirm("Are you sure you want to delete this post?")) return
     let request = new XMLHttpRequest();
@@ -34,6 +40,21 @@ async function deletePost(postId) {
         if (request.readyState === 4 && request.status === 200) {
             window.location.reload();
         }
+    }
+}
+
+async function vote(target, postId) {
+    let request = new XMLHttpRequest();
+    let payload = new FormData();
+    payload.append(csrf.name, csrf.value);
+    request.open("POST", "/posts/" + postId + "/vote", true);
+    request.send(payload);
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status === 200) {
+            target.classList.toggle("text-java-pink");
+            target.innerHTML = request.responseText + " - Vote";
+        }
+
     }
 }
 
@@ -69,5 +90,5 @@ function showReplyBox(target, postId) {
     form.append(label, text, button, input);
     form.className = "ml-2 mb-2 lg:mb-4 px-4 border-l-2 border-java-pink/80";
 
-    target.parentNode.after(form);
+    target.parentNode.parentNode.after(form);
 }

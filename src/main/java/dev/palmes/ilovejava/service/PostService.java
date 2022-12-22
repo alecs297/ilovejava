@@ -47,4 +47,6 @@ public interface PostService {
     void update(Post post, User user) throws PermissionLevelException, NotAvailableException;
 
     List<Post> getAllByUser(User user);
+
+    boolean toggleVote(Post post, User user);
 }

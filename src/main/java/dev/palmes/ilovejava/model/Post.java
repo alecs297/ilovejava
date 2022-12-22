@@ -49,6 +49,9 @@ public class Post {
     @ManyToOne
     private Thread thread;
 
+    @ManyToMany
+    private Set<User> votes = new HashSet<>();
+
     public UUID getId() {
         return id;
     }
@@ -143,6 +146,34 @@ public class Post {
 
     public Thread getThread() {
         return thread;
+    }
+
+    public int getVotesCount() {
+        return votes.size();
+    }
+
+    public void setVotes(Set<User> votes) {
+        this.votes = votes;
+    }
+
+    public Set<User> getVotes() {
+        return votes;
+    }
+
+    /**
+     * Toggle vote on post for user
+     *
+     * @param user The user who vote
+     * @return true if the was added, false otherwise (if removed)
+     */
+    public boolean toggleVote(User user) {
+        if (this.votes.contains(user)) {
+            this.votes.remove(user);
+            return false;
+        } else {
+            this.votes.add(user);
+            return true;
+        }
     }
 
     public void setThread(Thread thread) {

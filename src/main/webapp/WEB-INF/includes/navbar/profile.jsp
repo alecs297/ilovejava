@@ -1,9 +1,10 @@
+<jsp:useBean id="user" scope="session" type="dev.palmes.ilovejava.model.User"/>
 <div id="profile-quick-access" class="w-full px-0 lg:px-3 mb-12 lg:mb-2 text-6xl lg:text-2xl select-none">
     <div class="font-bold truncate">
-        ${user.getUsername()}
+        ${user.username}
     </div>
     <div class="border-l-2 border-java-pink pl-2 text-4xl lg:text-xs">
-        ${user.getPoints()} points
+        ${user.points} points
     </div>
 </div>
 <div id="profile-dropdown" class="px-0 lg:hidden text-5xl lg:text-xl lg:py-3">

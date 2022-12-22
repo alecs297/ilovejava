@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.User;
 import dev.palmes.ilovejava.service.PostService;
+import dev.palmes.ilovejava.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import java.util.UUID;
 @Controller
 public class PostController {
     private final PostService postService;
+    private final UserService userService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     /**
@@ -35,6 +38,7 @@ public class PostController {
             return "errors/notAvailable";
         }
     }
+
 
     /**
      * POST - Post a reply to a post
@@ -76,6 +80,32 @@ public class PostController {
         postService.save(post);
 
         return "redirect:/threads/" + parent.getThread().getId();
+    }
+
+    /**
+     * POST - Vote for post
+     */
+    @PostMapping("/posts/{id}/vote")
+    @ResponseBody
+    public String votePost(@PathVariable String id, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "redirect:/login";
+        }
+
+        UUID uuid = UUID.fromString(id);
+
+        Post post;
+        try {
+            post = this.postService.get(uuid);
+            postService.toggleVote(post, user);
+            session.setAttribute("user", userService.get(user.getId()));
+            return post.getVotesCount() + "";
+        } catch (NotFoundException | NotAvailableException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return "404";
+        }
     }
 
     /**

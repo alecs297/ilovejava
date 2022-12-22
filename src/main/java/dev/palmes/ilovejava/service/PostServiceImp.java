@@ -65,4 +65,10 @@ public class PostServiceImp implements PostService {
     public List<Post> getAllByUser(User user) {
         return postDao.getAllByUser(user);
     }
+
+    public boolean toggleVote(Post post, User user) {
+        boolean r = post.toggleVote(user);
+        postDao.update(post);
+        return r;
+    }
 }

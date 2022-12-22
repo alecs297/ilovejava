@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
+import dev.palmes.ilovejava.service.PostService;
 import dev.palmes.ilovejava.service.TagService;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,12 @@ public class ThreadController {
     private final ThreadService threadService;
     private final TagService tagService;
 
-    public ThreadController(ThreadService threadService, TagService tagService) {
+    private final PostService postService;
+
+    public ThreadController(ThreadService threadService, TagService tagService, PostService postService) {
         this.threadService = threadService;
         this.tagService = tagService;
+        this.postService = postService;
     }
 
     /**
@@ -83,6 +87,7 @@ public class ThreadController {
         post.setThread(thread);
 
         threadService.save(thread);
+        postService.save(post);
 
         return "redirect:/threads/" + thread.getId();
     }

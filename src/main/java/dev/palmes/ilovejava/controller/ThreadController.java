@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,20 +32,18 @@ public class ThreadController {
      * GET - Thread
      */
     @GetMapping("/threads/{id}")
-    public ModelAndView thread(@PathVariable String id, Model model, HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("content/thread");
-
+    public String thread(@PathVariable String id, Model model, HttpServletResponse response) {
         UUID uuid = UUID.fromString(id);
 
         try {
             Thread thread = this.threadService.get(uuid);
-            modelAndView.addObject("thread", thread);
+            model.addAttribute("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {
-            modelAndView.setViewName("errors/notAvailable");
-            modelAndView.setStatus(HttpStatus.NOT_FOUND);
-            modelAndView.addObject("error", e.getMessage());
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            model.addAttribute("error", e.getMessage());
+            return "errors/notAvailable";
         }
-        return modelAndView;
+        return "content/thread";
     }
 
     /**

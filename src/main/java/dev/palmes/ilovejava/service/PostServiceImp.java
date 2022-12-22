@@ -25,10 +25,6 @@ public class PostServiceImp implements PostService {
         if (post.getThread().isRemoved()) {
             throw new NotAvailableException();
         }
-
-        if (post.isRemoved()) {
-            post.setContent("[removed]");
-        }
         return post;
     }
 
@@ -41,6 +37,7 @@ public class PostServiceImp implements PostService {
     public void delete(Post post, User user) throws PermissionLevelException {
         if (post.getAuthor().equals(user) || user.isAdmin()) {
             post.setRemoved(true);
+            post.setContent("[removed]");
             postDao.update(post);
         } else {
             throw new PermissionLevelException();

@@ -73,6 +73,6 @@ public interface ThreadDao extends Dao<Thread> {
      * @param fromDate Date to start counting posts
      * @return List of threads sorted by number of posts
      */
-    List<Thread> listByPopular(int page, int size, Date fromDate);
+    List<Thread> listByTop(int page, int size, Date fromDate);
 
 }

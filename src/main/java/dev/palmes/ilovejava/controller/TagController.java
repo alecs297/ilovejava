@@ -1,5 +1,6 @@
 package dev.palmes.ilovejava.controller;
 
+import dev.palmes.ilovejava.exceptions.AlreadyExistException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
@@ -53,7 +54,8 @@ public class TagController {
      * POST - Create a new tag
      */
     @PostMapping("/tags")
-    public String createTag(String name, String description, Model model, HttpServletResponse response, HttpSession session) {
+    @ResponseBody
+    public String createTag(String id, String name, String description, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -61,24 +63,28 @@ public class TagController {
         }
 
         Tag tag = new Tag();
+        tag.setId(id);
         tag.setDescription(description);
         tag.setDisplayName(name);
 
         try {
             tagService.save(tag, user);
+
+        } catch (AlreadyExistException e) {
+            response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+            return e.getMessage();
         } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            model.addAttribute("error", "You don't have permission to do this");
-            return "errors/notPermitted";
+            return "redirect:/error";
         }
-
-        return "redirect:/explore";
+        return "";
     }
 
     /**
      * PUT - Update a tag
      */
     @PutMapping("/tags/{id}")
+    @ResponseBody
     public String updateTag(@PathVariable String id,
                             @RequestParam(required = false, defaultValue = "") String name,
                             @RequestParam(required = false, defaultValue = "") String description,
@@ -100,17 +106,17 @@ public class TagController {
             tagService.update(tag, user);
         } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            model.addAttribute("error", "You don't have permission to do this");
-            return "errors/notPermitted";
+            return "redirect:/error";
         }
 
-        return "redirect:/explore";
+        return "";
     }
 
     /**
      * DELETE - Delete a tag
      */
     @DeleteMapping("/tags/{id}")
+    @ResponseBody
     public String deleteTag(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -124,15 +130,13 @@ public class TagController {
             tagService.delete(tag, user);
         } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            model.addAttribute("error", "You don't have permission to do this");
-            return "errors/notPermitted";
-        } catch (Exception e) {
+            return "redirect:/error";
+        } catch (NotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
-            model.addAttribute("error", "Tag not found");
-            return "errors/notAvailable";
+            return "redirect:/tags";
         }
 
-        return "redirect:/explore";
+        return "";
     }
 
     @GetMapping("/tags")
@@ -146,7 +150,7 @@ public class TagController {
         }
 
         try {
-            List<Tag> tags = tagService.getAll(0, 50, user);
+            List<Tag> tags = tagService.getAll(0, 1000, user);
             model.addAttribute("tags", tags);
             return "content/admin_edit_tags";
         } catch (PermissionLevelException e) {

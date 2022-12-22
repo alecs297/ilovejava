@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.dao.TagDao;
+import dev.palmes.ilovejava.exceptions.AlreadyExistException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
@@ -25,9 +26,12 @@ public class TagServiceImp implements TagService {
     }
 
     @Override
-    public void save(Tag tag, User user) throws PermissionLevelException {
+    public void save(Tag tag, User user) throws AlreadyExistException, PermissionLevelException {
         if (!user.isAdmin()) {
             throw new PermissionLevelException();
+        }
+        if (tagDao.get(tag.getId()).isPresent()) {
+            throw new AlreadyExistException("Tag with same id already exists");
         }
         tag.setDisplayName(HtmlUtils.htmlEscape(tag.getDisplayName()));
         tagDao.save(tag);

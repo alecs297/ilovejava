@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class ThreadDaoImp implements ThreadDao {
         Join<Thread, dev.palmes.ilovejava.model.Tag> tagJoin = result.join("tags");
         query.select(result).where(
                 builder.and(
-                        builder.equal(tagJoin.get("name"), tag),
+                        builder.equal(tagJoin.get("id"), tag),
                         builder.or(
                                 builder.equal(result.get("removed"), false),
                                 builder.equal(result.get("removed"), removed)
@@ -101,7 +102,6 @@ public class ThreadDaoImp implements ThreadDao {
                 )
         );
 
-        query.groupBy(result.get("id"));
 
         return sessionFactory.getCurrentSession()
                 .createQuery(query)
@@ -141,30 +141,13 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
-    public List<Thread> listByPopular(int page, int size, Date fromDate) {
-        // Create a CriteriaBuilder instance
-        CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-        CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
+    public List<Thread> listByTop(int page, int size, Date fromDate) {
+        CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<Thread> query = cb.createQuery(Thread.class);
         Root<Thread> root = query.from(Thread.class);
-
-        Join<Thread, Post> childJoin = root.join("posts", JoinType.INNER);
-
-        // Add a predicate to filter the child objects by the date they were created
-        Predicate datePredicate = builder.greaterThanOrEqualTo(childJoin.get("creationDate"), fromDate);
-        // Use the predicate to filter the child objects
-        query.groupBy(root.get("id"));
-
-
-        // Add a having clause to filter the groups by the number of child objects
-        Expression<Long> countExpression = builder.count(childJoin.on(datePredicate).get("id"));
-
-        query.orderBy(builder.desc(countExpression));
-        query.where(builder.equal(root.get("removed"), false));
-
-        return sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setFirstResult(page * size)
-                .setMaxResults(size)
-                .getResultList();
+        Join<Thread, Post> entryJoin = root.join("entry");
+        query.orderBy(cb.desc(cb.size(entryJoin.get("votes"))));
+        TypedQuery<Thread> typedQuery = sessionFactory.getCurrentSession().createQuery(query);
+        return typedQuery.getResultList();
     }
 }

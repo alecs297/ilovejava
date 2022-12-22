@@ -211,8 +211,9 @@ public class UserController {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            model.addAttribute("user", user.get().getSafeUser());
+            model.addAttribute("viewUser", user.get().getSafeUser());
             try {
+                model.addAttribute("pageTitle", user.get().getUsername());
                 model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
             } catch (PermissionLevelException e) {
                 model.addAttribute("error", e.getMessage());
@@ -244,8 +245,8 @@ public class UserController {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-
-            model.addAttribute("user", user.get().getSafeUser());
+            model.addAttribute("pageTitle", user.get().getUsername());
+            model.addAttribute("viewUser", user.get().getSafeUser());
             model.addAttribute("posts", postService.getAllByUser(user.get()));
 
             return "content/user_posts";

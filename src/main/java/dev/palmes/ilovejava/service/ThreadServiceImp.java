@@ -133,9 +133,9 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
-    public List<Thread> listByPopular(int page, int size) {
+    public List<Thread> listByTop(int page, int size) {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        return threadDao.listByPopular(page, size, cal.getTime());
+        return threadDao.listByTop(page, size, cal.getTime());
     }
 }

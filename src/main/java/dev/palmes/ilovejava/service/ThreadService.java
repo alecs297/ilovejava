@@ -134,5 +134,5 @@ public interface ThreadService {
      * @param size Number of threads per page
      * @return List of threads
      */
-    List<Thread> listByPopular(int page, int size);
+    List<Thread> listByTop(int page, int size);
 }

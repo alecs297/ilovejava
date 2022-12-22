@@ -69,5 +69,5 @@ function showReplyBox(target, postId) {
     form.append(label, text, button, input);
     form.className = "ml-2 mb-2 lg:mb-4 px-4 border-l-2 border-java-pink/80";
 
-    target.after(form);
+    target.parentNode.after(form);
 }

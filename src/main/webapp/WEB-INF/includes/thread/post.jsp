@@ -1,10 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<%@ page import="com.asosyalbebe.moment4j.Moment" %>
+
 <jsp:useBean id="posts" scope="request" type="java.util.List<dev.palmes.ilovejava.model.Post>"/>
 <c:forEach var="post" items="${posts}">
     <div class="mb-2 lg:mb-4">
         <span class="mt-4 text-2xl lg:text-base text-black/70">
-            <a href="/users/${post.author.username}">[ ${post.author.username} ]</a>
+            <a href="/users/${post.author.username}">[ ${post.author.username} ] <span
+                    class="text-xl lg:text-sm">on ${Moment.moment(post.creationDate).format("dd/MM/YY HH:mm")}</span></a>
         </span>
         <div class="border-l-2 lg:mb-2">
             <div class="content prose prose-2xl lg:prose-base max-w-screen  lg:max-w-screen-2xl bg-slate-100 p-4 py-8 lg:py-4 rounded-br-lg rounded-tr-lg

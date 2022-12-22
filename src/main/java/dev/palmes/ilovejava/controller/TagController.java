@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class TagController {
@@ -104,5 +105,24 @@ public class TagController {
         }
 
         return "redirect:/explore";
+    }
+
+    @GetMapping("/tags")
+    public String manageTags(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (!user.isAdmin()) {
+            return "errors/notPermitted";
+        }
+
+        try {
+            List<Tag> tags = tagService.getAll(0, 50, user);
+            model.addAttribute("tags", tags);
+            return "content/admin_edit_tags";
+        } catch (PermissionLevelException e) {
+            return "errors/notPermitted";
+        }
     }
 }

@@ -6,10 +6,21 @@ const md = window.markdownit({
 });
 
 const contents = document.getElementsByClassName("content");
+const csrf = document.getElementById("csrf");
+
 [...contents].forEach(content => {
     content.innerHTML = md.render(content.innerHTML);
 })
-const csrf = document.getElementById("csrf");
+
+const codeblocks = document.querySelectorAll("pre > code");
+
+codeblocks.forEach(element => {
+    element.innerText = element.innerText
+        .replaceAll('&amp;', '&')
+        .replaceAll('&lt;', "<")
+        .replaceAll('&gt;', '>')
+        .replace(' ', '\u00a0s');
+})
 
 document.querySelectorAll("[id^='reply-']").forEach(button => {
     button.addEventListener("click", (e) => {

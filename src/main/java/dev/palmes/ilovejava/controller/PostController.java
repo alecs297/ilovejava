@@ -115,6 +115,7 @@ public class PostController {
      * </p>
      */
     @PutMapping("/posts/{id}")
+    @ResponseBody
     public String updatePost(@PathVariable String id, String content, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -131,9 +132,8 @@ public class PostController {
         }
 
         try {
-            Post post = new Post();
+            Post post = postService.get(uuid);
             post.setContent(content);
-            post.setId(uuid);
 
             this.postService.update(post, user);
 
@@ -146,7 +146,7 @@ public class PostController {
             return "redirect:error/notAvailable";
         }
 
-        return "redirect:/threads/" + id;
+        return "";
     }
 
     /**

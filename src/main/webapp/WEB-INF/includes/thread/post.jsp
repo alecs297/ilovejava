@@ -16,13 +16,14 @@
                  id="${post.id}">
                     ${post.content}
             </div>
+            <pre hidden id="source-${post.id}">${post.content}</pre>
             <div class="flex justify-start">
                 <div class="flex">
-                    <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
+                    <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
                             id="reply-${post.id}">
                         Reply
                     </button>
-                    <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2 whitespace-nowrap"
+                    <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2 whitespace-nowrap"
                             id="vote-${post.id}">
                             ${post.votesCount} - Vote
                     </button>
@@ -30,12 +31,12 @@
                 <div class="flex">
                     <c:if test="${(!post.removed) && (post.author.id == sessionScope.user.id || sessionScope.user.admin)}">
                         <c:if test="${post.author.id == sessionScope.user.id}">
-                            <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
+                            <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
                                     id="edit-${post.id}">
                                 Edit
                             </button>
                         </c:if>
-                        <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2"
+                        <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2"
                                 id="remove-${post.id}">
                             Remove
                         </button>

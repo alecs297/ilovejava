@@ -41,6 +41,5 @@
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/static/js/new.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/areahelper.js"></script>
 </body>
 </html>

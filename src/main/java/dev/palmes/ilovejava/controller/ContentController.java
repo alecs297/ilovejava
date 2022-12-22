@@ -1,6 +1,8 @@
 package dev.palmes.ilovejava.controller;
 
+import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.Thread;
+import dev.palmes.ilovejava.service.TagService;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +16,17 @@ import java.util.List;
 public class ContentController {
 
     private final ThreadService threadService;
+    private final TagService tagService;
 
-    public ContentController(ThreadService threadService) {
+    public ContentController(ThreadService threadService, TagService tagService) {
         this.threadService = threadService;
+        this.tagService = tagService;
     }
 
     @GetMapping("/new")
     public String newpost(Model model, HttpSession session) {
+        List<Tag> tags = tagService.getPublicTags(0, 100);
+        model.addAttribute("tags", tags);
         model.addAttribute("error", "");
         return session.getAttribute("user") != null ? "content/new" : "redirect:/login";
     }

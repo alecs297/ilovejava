@@ -18,7 +18,7 @@
             <textarea
                     class="block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
                     id="content" name="content" placeholder="What's on your mind ?"></textarea>
-            <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full"></div>
+            <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full overflow-x-scroll"></div>
             <label class="block text-slate-400 text-4xl lg:text-sm px-1 mb-3" for="content">Markdown is supported
                 !</label>
             <div class="text-5xl lg:text-2xl my-8 lg:my-4 text-java-blue">
@@ -40,7 +40,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/new.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/areahelper.js"></script>
 </body>

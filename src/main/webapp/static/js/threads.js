@@ -9,7 +9,7 @@ function unescape(str) {
     return str.replaceAll('&amp;', '&')
         .replaceAll('&lt;', "<")
         .replaceAll('&gt;', '>')
-        .replace(' ', '\u00a0s');
+        .replace('&nbsp;', '\u00a0s');
 }
 
 const contents = document.getElementsByClassName("content");

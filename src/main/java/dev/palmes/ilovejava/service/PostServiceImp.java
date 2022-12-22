@@ -7,6 +7,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class PostServiceImp implements PostService {
 
     @Override
     public void save(Post post) {
+        post.setContent(HtmlUtils.htmlEscape(post.getContent()));
         postDao.save(post);
     }
 
@@ -47,6 +49,7 @@ public class PostServiceImp implements PostService {
     @Override
     public void update(Post post, User user) throws PermissionLevelException {
         if (post.getAuthor().equals(user)) {
+            post.setContent(HtmlUtils.htmlEscape(post.getContent()));
             postDao.update(post);
         } else {
             throw new PermissionLevelException();

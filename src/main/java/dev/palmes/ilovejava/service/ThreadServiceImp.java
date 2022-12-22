@@ -7,6 +7,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -32,6 +33,7 @@ public class ThreadServiceImp implements ThreadService {
 
     @Override
     public void save(Thread thread) {
+        thread.setTitle(HtmlUtils.htmlEscape(thread.getTitle()));
         threadDao.save(thread);
     }
 
@@ -49,6 +51,7 @@ public class ThreadServiceImp implements ThreadService {
         if (!user.isAdmin() && !user.equals(thread.getEntry().getAuthor())) {
             throw new PermissionLevelException("You don't have the permission to update this thread");
         }
+        thread.setTitle(HtmlUtils.htmlEscape(thread.getTitle()));
         threadDao.update(thread);
     }
 

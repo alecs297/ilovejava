@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class TagServiceImp implements TagService {
         if (!user.isAdmin()) {
             throw new PermissionLevelException();
         }
+        tag.setDisplayName(HtmlUtils.htmlEscape(tag.getDisplayName()));
         tagDao.save(tag);
     }
 
@@ -44,6 +46,7 @@ public class TagServiceImp implements TagService {
         if (!user.isAdmin()) {
             throw new PermissionLevelException();
         }
+        tag.setDisplayName(HtmlUtils.htmlEscape(tag.getDisplayName()));
         tagDao.update(tag);
     }
 

@@ -71,7 +71,8 @@ public class ThreadController {
 
         post.setThread(thread);
 
-        this.threadService.save(thread);
+        threadService.save(thread);
+        postService.save(post);
 
         return "redirect:/threads/" + thread.getId();
     }

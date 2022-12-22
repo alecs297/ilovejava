@@ -110,45 +110,6 @@ public class ThreadController {
         return "redirect:/threads/" + id;
     }
 
-    /**
-     * POST - Create a new Post in a Thread
-     * <p>
-     * Create a new post in a thread
-     * </p>
-     */
-    @PostMapping("/threads/{id}")
-    public String newPost(@PathVariable String id, String content, HttpServletResponse response, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        try {
-            System.out.println("ID: " + id);
-            Post parent = threadService.get(UUID.fromString(id)).getEntry();
-
-            if (content.length() > Post.MAX_CONTENT_SIZE) {
-                response.setStatus(HttpStatus.BAD_REQUEST.value());
-                model.addAttribute("error", "Content is too long");
-                return "redirect:/threads/" + id;
-            }
-
-            Post post = new Post();
-            post.setContent(content);
-            post.setAuthor(user);
-            post.setParent(parent);
-            post.setThread(parent.getThread());
-
-            postService.save(post);
-
-            return "redirect:/threads/" + parent.getThread().getId();
-        } catch (NotFoundException | NotAvailableException e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return "errors/notAvailable";
-        }
-
-
-    }
-
 
     /**
      * DELETE - Delete a Thread

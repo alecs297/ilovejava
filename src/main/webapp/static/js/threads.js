@@ -10,13 +10,34 @@ const contents = document.getElementsByClassName("content");
     content.innerHTML = md.render(content.innerHTML);
 })
 const csrf = document.getElementById("csrf");
+
 document.querySelectorAll("[id^='reply-']").forEach(button => {
     button.addEventListener("click", (e) => {
         showReplyBox(e.target, button.id.slice("reply-".length))
     })
 })
 
-function showReplyBox(event, postId) {
+document.querySelectorAll("[id^='remove-']").forEach(button => {
+    button.addEventListener("click", async () => {
+        await deletePost(button.id.slice("remove-".length))
+    })
+})
+
+async function deletePost(postId) {
+    if (!confirm("Are you sure you want to delete this post?")) return
+    let request = new XMLHttpRequest();
+    let payload = new FormData();
+    payload.append(csrf.name, csrf.value);
+    request.open("DELETE", "/posts/" + postId, true);
+    request.send(payload);
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status === 200) {
+            window.location.reload();
+        }
+    }
+}
+
+function showReplyBox(target, postId) {
 
     document.querySelectorAll("[id^='replybox-']")
         .forEach(box => box.parentNode.removeChild(box));
@@ -48,5 +69,5 @@ function showReplyBox(event, postId) {
     form.append(label, text, button, input);
     form.className = "ml-2 mb-2 lg:mb-4 px-4 border-l-2 border-java-pink/80";
 
-    event.after(form);
+    target.after(form);
 }

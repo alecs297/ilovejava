@@ -41,13 +41,16 @@ public interface UserService {
      * Update a user from the database, the user performing the
      * action need to be the user to update or an admin
      *
-     * @param user           The user to update
-     * @param userRequesting The user requesting the update
+     * @param user                      The user to update
+     * @param originalPassword          User original password
+     * @param newPassword               User new password (can be blank)
+     * @param email                     User email
+     * @param username                  User username
      * @throws AlreadyExistException    Another user already uses these credentials
      * @throws InvalidFormatException   Format is not correct
      * @throws PermissionLevelException The User did not confirm his authority on the account with the oldPassword
      */
-    void update(User user, User userRequesting, String originalPassword) throws PermissionLevelException, InvalidFormatException, AlreadyExistException;
+    void update(User user, String originalPassword, String newPassword, String email, String username) throws PermissionLevelException, InvalidFormatException, AlreadyExistException;
 
     /**
      * Find a user by its username

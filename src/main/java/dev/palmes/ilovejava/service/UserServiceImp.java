@@ -92,42 +92,37 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional
-    public void update(User user, User userRequesting, String originalPassword) throws PermissionLevelException, InvalidFormatException, AlreadyExistException {
-        if (!userRequesting.isAdmin() && !userRequesting.equals(user)) {
-            throw new PermissionLevelException();
+    public void update(User user, String originalPassword, String newPassword, String email, String username) throws PermissionLevelException, InvalidFormatException, AlreadyExistException {
+
+        if (!new BCryptPasswordEncoder().matches(originalPassword, user.getPassword())) {
+            throw new PermissionLevelException("Password does not match");
         }
 
-        // Check original password if not admin or if admin and self editing
-        if (!user.isAdmin() || user.getId().equals(userRequesting.getId())) {
-            if (!new BCryptPasswordEncoder().matches(originalPassword, user.getPassword())) {
-                throw new InvalidFormatException("Original password is not valid");
+        if (!newPassword.isBlank()) {
+            if (!checkPassword(newPassword)) {
+                throw new InvalidFormatException("New password is not valid");
             }
+            user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         }
 
-        // New password
-        if (!user.getPassword().isBlank()) {
-            if (!checkPassword(user.getPassword())) {
-                throw new InvalidFormatException("Password is not valid");
-            }
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        }
-
-        if (!user.getEmail().isBlank()) {
-            if (!checkEmail(user.getEmail())) {
+        if (!email.equals(user.getEmail())) {
+            if (!checkEmail(email)) {
                 throw new InvalidFormatException("Email is not valid");
             }
-            if (userDao.findByEmail(user.getEmail()) != null) {
-                throw new AlreadyExistException("Email already exists");
+            if (userDao.findByEmail(email) != null) {
+                throw new AlreadyExistException("Email already used");
             }
+            user.setEmail(email);
         }
 
-        if (!user.getUsername().isBlank()) {
-            if (!checkUsername(user.getUsername())) {
+        if (!username.equals(user.getUsername())) {
+            if (!checkUsername(username)) {
                 throw new InvalidFormatException("Username is not valid");
             }
-            if (userDao.findByUsername(user.getUsername()) != null) {
-                throw new AlreadyExistException("Email already exists");
+            if (userDao.findByUsername(username) != null) {
+                throw new AlreadyExistException("Username already taken");
             }
+            user.setUsername(username);
         }
 
         // Everything is valid, save it

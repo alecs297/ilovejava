@@ -13,15 +13,11 @@
                                                                                        href="/register">Register</a> one
                 for free</h2>
         </div>
-        <label>
-            <input value="${login}"
-                   class="w-full block px-8 py-5 lg:py-3 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
+        <input value="${login}"
+               class="w-full block px-8 py-5 lg:py-3 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
                    name="login" type="text" placeholder="Username or email"/>
-        </label>
-        <label>
-            <input class="w-full block px-8 py-5 lg:py-3 border-2 rounded-lg lg:rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
-                   name="password" type="password" placeholder="Password"/>
-        </label>
+        <input class="w-full block px-8 py-5 lg:py-3 border-2 rounded-lg lg:rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
+               name="password" type="password" placeholder="Password"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="w-full text-5xl lg:text-lg block px-8 py-6 lg:py-3 rounded-lg lg:rounded-lg text-background-default ${empty error ? "bg-java-blue" : "bg-java-pink"}"
                 type="submit">${empty error ? "Login" : "Wrong credentials"}</button>

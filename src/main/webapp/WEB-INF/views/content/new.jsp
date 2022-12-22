@@ -21,6 +21,10 @@
             <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full"></div>
             <label class="block text-slate-400 text-4xl lg:text-sm px-1 mb-3" for="content">Markdown is supported
                 !</label>
+            <div class="text-5xl lg:text-2xl my-8 lg:my-4 text-java-blue">
+                <h2 class="text-5xl lg:text-2xl text-black">Choose some tags</h2>
+                <jsp:include page="fetch_tags.jsp" />
+            </div>
             <div class="text-5xl lg:text-3xl">
                 <label class="inline-block align-middle w-24 lg:w-12 border-2 rounded-3xl cursor-pointer inline-flex items-center mb-3">
                     <input id="preview-btn" type="checkbox" value="" class="sr-only peer">

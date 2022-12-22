@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,12 +27,12 @@ public class PostController {
      * GET - Post page mapping
      */
     @GetMapping("/posts/{id}")
-    public ModelAndView post(@PathVariable UUID id, Model model, HttpSession session) {
+    public String post(@PathVariable UUID id) {
         try {
             Post post = postService.get(id);
-            return new ModelAndView(new RedirectView("/threads/" + post.getThread().getId() + "#" + id));
+            return "redirect:/threads/" + post.getThread().getId() + "#" + id;
         } catch (NotFoundException | NotAvailableException e) {
-            return new ModelAndView("errors/notAvailable");
+            return "errors/notAvailable";
         }
     }
 
@@ -125,6 +123,7 @@ public class PostController {
      * DELETE - Delete a post
      */
     @DeleteMapping("/posts/{id}")
+    @ResponseBody
     public String deletePost(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -142,6 +141,6 @@ public class PostController {
             return "redirect:error/notAvailable";
         }
 
-        return "redirect:/explore";
+        return "";
     }
 }

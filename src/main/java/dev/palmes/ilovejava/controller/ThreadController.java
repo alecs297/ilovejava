@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,20 +32,18 @@ public class ThreadController {
      * GET - Thread
      */
     @GetMapping("/threads/{id}")
-    public ModelAndView thread(@PathVariable String id, Model model, HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("content/thread");
-
+    public String thread(@PathVariable String id, Model model, HttpServletResponse response) {
         UUID uuid = UUID.fromString(id);
 
         try {
             Thread thread = this.threadService.get(uuid);
-            modelAndView.addObject("thread", thread);
+            model.addAttribute("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {
-            modelAndView.setViewName("errors/notAvailable");
-            modelAndView.setStatus(HttpStatus.NOT_FOUND);
-            modelAndView.addObject("error", e.getMessage());
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            model.addAttribute("error", e.getMessage());
+            return "errors/notAvailable";
         }
-        return modelAndView;
+        return "content/thread";
     }
 
     /**
@@ -74,7 +71,8 @@ public class ThreadController {
 
         post.setThread(thread);
 
-        this.threadService.save(thread);
+        threadService.save(thread);
+        postService.save(post);
 
         return "redirect:/threads/" + thread.getId();
     }
@@ -110,45 +108,6 @@ public class ThreadController {
         }
 
         return "redirect:/threads/" + id;
-    }
-
-    /**
-     * POST - Create a new Post in a Thread
-     * <p>
-     * Create a new post in a thread
-     * </p>
-     */
-    @PostMapping("/threads/{id}")
-    public String newPost(@PathVariable String id, String content, HttpServletResponse response, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        try {
-            System.out.println("ID: " + id);
-            Post parent = threadService.get(UUID.fromString(id)).getEntry();
-
-            if (content.length() > Post.MAX_CONTENT_SIZE) {
-                response.setStatus(HttpStatus.BAD_REQUEST.value());
-                model.addAttribute("error", "Content is too long");
-                return "redirect:/threads/" + id;
-            }
-
-            Post post = new Post();
-            post.setContent(content);
-            post.setAuthor(user);
-            post.setParent(parent);
-            post.setThread(parent.getThread());
-
-            postService.save(post);
-
-            return "redirect:/threads/" + parent.getThread().getId();
-        } catch (NotFoundException | NotAvailableException e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return "errors/notAvailable";
-        }
-
-
     }
 
 

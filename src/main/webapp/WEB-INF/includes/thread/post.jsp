@@ -18,11 +18,13 @@
                     Reply
                 </button>
                 <div class="flex">
-                    <c:if test="${post.author.id == sessionScope.user.id || sessionScope.user.admin}">
-                        <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
-                                id="edit-${post.id}">
-                            Edit
-                        </button>
+                    <c:if test="${(!post.removed) && (post.author.id == sessionScope.user.id || sessionScope.user.admin)}">
+                        <c:if test="${post.author.id == sessionScope.user.id}">
+                            <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
+                                    id="edit-${post.id}">
+                                Edit
+                            </button>
+                        </c:if>
                         <button class="w-full text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2"
                                 id="remove-${post.id}">
                             Remove

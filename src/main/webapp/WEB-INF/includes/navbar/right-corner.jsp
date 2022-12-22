@@ -9,7 +9,7 @@
     </div>
     <div id="navbar-content"
          class="absolute bg-background-default left-0 right-0 h-screen lg:h-max lg:static hidden lg:block cursor-pointer float-right">
-        <div class="w-full px-48 lg:p-0">
+        <div class="w-full px-48 lg:p-0 lg:px-4">
             <nav class="block lg:hidden py-12 text-5xl">
                 <h2 class="text-6xl font-bold mb-12 cursor-default select-none">Navigation</h2>
                 <jsp:include page="content.jsp"/>

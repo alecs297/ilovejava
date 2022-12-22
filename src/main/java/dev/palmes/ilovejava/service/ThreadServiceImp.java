@@ -1,9 +1,11 @@
 package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.dao.ThreadDao;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotAvailableException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
+import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
@@ -41,8 +43,20 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
-    public void save(Thread thread) {
+    public void save(Thread thread) throws InvalidFormatException {
         thread.setTitle(HtmlUtils.htmlEscape(thread.getTitle()));
+
+        if (thread.getTitle().length() < 1 || thread.getTitle().length() > 100) {
+            throw new InvalidFormatException("The title must be between 1 and 100 characters");
+        }
+
+        if (thread.getEntry().getContent().length() < 2 || thread.getEntry().getContent().length() >= Post.MAX_CONTENT_SIZE) {
+            throw new InvalidFormatException("The content must be between 1 and 10000 characters");
+        }
+
+        if (thread.getTags().size() < 1) {
+            throw new InvalidFormatException("The thread must have at least one tag");
+        }
 
         threadDao.save(thread);
     }

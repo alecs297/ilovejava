@@ -59,7 +59,7 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads")
-    public String newThread(String title, String content, @RequestParam(name = "tag") List<String> Tags, HttpServletResponse response, HttpSession session) {
+    public String newThread(String title, String content, @RequestParam(name = "tag", required = false) List<String> Tags, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -75,21 +75,32 @@ public class ThreadController {
         thread.setTitle(title);
         thread.setEntry(post);
 
-        for (String tag : Tags) {
-            try {
-                thread.addTag(this.tagService.get(tag));
-            } catch (NotFoundException e) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return "redirect:/";
+        if (Tags != null) {
+            for (String tag : Tags) {
+                try {
+                    thread.addTag(this.tagService.get(tag));
+                } catch (NotFoundException e) {
+                    response.setStatus(HttpStatus.NOT_FOUND.value());
+                    return "redirect:/";
+                }
             }
         }
 
         post.setThread(thread);
 
-        threadService.save(thread);
-        postService.save(post);
+        try {
+            this.threadService.save(thread);
+            postService.save(post);
+            return "redirect:/threads/" + thread.getId();
+        } catch (Exception e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            model.addAttribute("tags", this.tagService.getPublicTags(0, 100));
+            model.addAttribute("title", title);
+            model.addAttribute("content", content);
+            model.addAttribute("error", e.getMessage());
+            return "content/new";
+        }
 
-        return "redirect:/threads/" + thread.getId();
     }
 
     /**
@@ -110,17 +121,16 @@ public class ThreadController {
 
         try {
             Thread thread = this.threadService.get(uuid);
-            // TODO: Move to service
-            if (thread.getEntry().getThread().getId().equals(user.getId()) || user.isAdmin()) {
-                thread.setTitle(title);
-                this.threadService.save(thread);
-            } else {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                model.addAttribute("error", "You don't have permission to do this");
-                return "errors/notPermitted";
-            }
+
+            thread.setTitle(title);
+            this.threadService.update(thread, user);
+
         } catch (NotFoundException | NotAvailableException e) {
             return "redirect:/errors/notAvailable";
+        } catch (PermissionLevelException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            model.addAttribute("error", "You don't have permission to do this");
+            return "errors/notPermitted";
         }
 
         return "redirect:/threads/" + id;

@@ -12,18 +12,19 @@
                                                                            target="_blank">rules</a> before posting.</p>
         <form class="w-full" action="/threads" method="POST">
             <input class="block w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
-                   id="title" name="title" type="text" placeholder="Title"/>
+                   id="title" name="title" type="text" placeholder="Title" value="${title}"/>
             <label class="block text-slate-400 text-4xl lg:text-sm px-1 mb-3" for="title">Make it clear and
                 concise</label>
             <textarea
                     class="block mt-4 resize-none w-full px-4 py-4 lg:py-2 border-2 rounded ${empty error ? "border-java-blue" : "border-java-pink"}"
-                    id="content" name="content" placeholder="What's on your mind ?"></textarea>
-            <div id="preview-content" class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full overflow-x-scroll"></div>
+                    id="content" name="content" placeholder="What's on your mind ?">${content}</textarea>
+            <div id="preview-content"
+                 class="w-full bg-slate-200 rounded-lg prose prose-xl p-2 hidden max-w-full overflow-x-scroll"></div>
             <label class="block text-slate-400 text-4xl lg:text-sm px-1 mb-3" for="content">Markdown is supported
                 !</label>
             <div class="text-5xl lg:text-2xl my-8 lg:my-4 text-java-blue">
                 <h2 class="text-5xl lg:text-2xl text-black">Choose some tags</h2>
-                <jsp:include page="fetch_tags.jsp" />
+                <jsp:include page="fetch_tags.jsp"/>
             </div>
             <div class="text-5xl lg:text-3xl">
                 <label class="inline-block align-middle w-24 lg:w-12 border-2 rounded-3xl cursor-pointer inline-flex items-center mb-3">
@@ -35,7 +36,7 @@
             </div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button class=" w-full mt-4 text-5xl lg:text-lg block px-8 py-6 lg:py-3 rounded-lg lg:rounded-lg text-background-default ${empty error ? "bg-java-blue" : "bg-java-pink"}"
-                    type="submit">${empty error ? "Create thread" : "Wrong credentials"}</button>
+                    type="submit">${empty error ? "Create thread" : error}</button>
         </form>
     </div>
 </div>

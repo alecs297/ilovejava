@@ -14,6 +14,11 @@
 %>
 <div class="grow w-screen min-h-screen lg:px-24 text-5xl lg:text-base grid mb-12">
     <div class="lg:w-1/2 lg:max-w-screen-2xl place-self-center">
+        <c:if test="${thread.removed}">
+            <h2 class="text-6xl lg:text-4xl mt-4 lg:mb-2 font-bold text-java-pink break-keep block">
+                Removed
+            </h2>
+        </c:if>
         <h1 class="text-8xl lg:text-5xl mt-4 lg:mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
         </h1>

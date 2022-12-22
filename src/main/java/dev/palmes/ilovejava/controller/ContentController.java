@@ -2,11 +2,13 @@ package dev.palmes.ilovejava.controller;
 
 import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.Thread;
+import dev.palmes.ilovejava.model.User;
 import dev.palmes.ilovejava.service.TagService;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,11 +40,17 @@ public class ContentController {
      * </p>
      */
     @GetMapping("/explore")
-    public String explore(HttpServletRequest request) {
+    public String explore(@RequestParam(defaultValue = "0") int page, @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
 
-        List<Thread> threads = threadService.getAll(0, 10);
+        try {
+            List<Thread> threads = threadService.getAll(page, 10, removed, user);
+            request.setAttribute("threads", threads);
+        } catch (Exception e) {
+            request.setAttribute("error", e.getMessage());
+            return "errors/notAvailable";
+        }
 
-        request.setAttribute("threads", threads);
         return "content/explore";
     }
 
@@ -57,7 +65,7 @@ public class ContentController {
         List<Thread> threads = threadService.listByPopular(0, 10);
 
         request.setAttribute("threads", threads);
-        return "content/trending";
+        return "content/explore";
     }
 
     /**
@@ -71,6 +79,6 @@ public class ContentController {
         List<Thread> threads = threadService.listByRecent(0, 10);
 
         request.setAttribute("threads", threads);
-        return "content/recent";
+        return "content/explore";
     }
 }

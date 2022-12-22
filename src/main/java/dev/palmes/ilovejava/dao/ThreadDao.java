@@ -35,7 +35,7 @@ public interface ThreadDao extends Dao<Thread> {
     /**
      * Get <em>size</em> threads from user
      *
-     * @param userId  UUID of the user
+     * @param user    user to get threads from
      * @param page    Page number
      * @param size    Number of threads per page
      * @param removed If true, include removed threads

@@ -32,8 +32,18 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
+    public Thread get(UUID id, User user) throws NotFoundException, NotAvailableException {
+        Thread thread = threadDao.get(id).orElseThrow(NotFoundException::new);
+        if (thread.isRemoved() && (user == null || !user.isAdmin() || !user.equals(thread.getEntry().getAuthor()))) {
+            throw new NotAvailableException();
+        }
+        return thread;
+    }
+
+    @Override
     public void save(Thread thread) {
         thread.setTitle(HtmlUtils.htmlEscape(thread.getTitle()));
+
         threadDao.save(thread);
     }
 

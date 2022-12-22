@@ -21,6 +21,16 @@ public interface ThreadService {
     Thread get(UUID id) throws NotFoundException, NotAvailableException;
 
     /**
+     * Get a thread using its id
+     *
+     * @return The thread
+     * @throws NotAvailableException Parent thread as been deleted
+     * @throws NotFoundException     Thread doesn't exist
+     */
+    Thread get(UUID id, User user) throws NotFoundException, NotAvailableException;
+
+
+    /**
      * Create a new thread in the database
      *
      * @param thread The thread to create

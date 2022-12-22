@@ -35,7 +35,7 @@ public class ThreadDaoImp implements ThreadDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Thread> getAll(int page, int size, boolean removed) {
-        return sessionFactory.getCurrentSession().createQuery("from Thread where removed = false and removed = :removed")
+        return sessionFactory.getCurrentSession().createQuery("from Thread where removed = false or removed = :removed")
                 .setParameter("removed", removed)
                 .setFirstResult(page * size)
                 .setMaxResults(size)
@@ -66,7 +66,7 @@ public class ThreadDaoImp implements ThreadDao {
         query.select(result).where(
                 builder.and(
                         builder.equal(tagJoin.get("name"), tag),
-                        builder.and(
+                        builder.or(
                                 builder.equal(result.get("removed"), false),
                                 builder.equal(result.get("removed"), removed)
 
@@ -93,7 +93,7 @@ public class ThreadDaoImp implements ThreadDao {
         query.select(result).where(
                 builder.and(
                         builder.equal(postJoin.get("author"), user),
-                        builder.and(
+                        builder.or(
                                 builder.equal(result.get("removed"), false),
                                 builder.equal(result.get("removed"), removed)
 
@@ -147,12 +147,11 @@ public class ThreadDaoImp implements ThreadDao {
         CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
         Root<Thread> root = query.from(Thread.class);
 
-        Join<Thread, Post> childJoin = root.join("posts");
+        Join<Thread, Post> childJoin = root.join("posts", JoinType.INNER);
 
         // Add a predicate to filter the child objects by the date they were created
         Predicate datePredicate = builder.greaterThanOrEqualTo(childJoin.get("creationDate"), fromDate);
         // Use the predicate to filter the child objects
-        query.where(builder.equal(root.get("removed"), false));
         query.groupBy(root.get("id"));
 
 
@@ -160,7 +159,12 @@ public class ThreadDaoImp implements ThreadDao {
         Expression<Long> countExpression = builder.count(childJoin.on(datePredicate).get("id"));
 
         query.orderBy(builder.desc(countExpression));
+        query.where(builder.equal(root.get("removed"), false));
 
-        return sessionFactory.getCurrentSession().createQuery(query).getResultList();
+        return sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 }

@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="user" scope="session" class="dev.palmes.ilovejava.model.User"/>
 
 <div class="w-56 text-xl h-full align-bottom">
     <div class="block lg:hidden p-2 w-full h-full">

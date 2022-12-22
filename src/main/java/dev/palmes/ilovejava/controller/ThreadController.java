@@ -6,7 +6,7 @@ import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
-import dev.palmes.ilovejava.service.PostService;
+import dev.palmes.ilovejava.service.TagService;
 import dev.palmes.ilovejava.service.ThreadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,28 +15,30 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 public class ThreadController {
 
     private final ThreadService threadService;
-    private final PostService postService;
+    private final TagService tagService;
 
-    public ThreadController(ThreadService threadService, PostService postService) {
+    public ThreadController(ThreadService threadService, TagService tagService) {
         this.threadService = threadService;
-        this.postService = postService;
+        this.tagService = tagService;
     }
 
     /**
      * GET - Thread
      */
     @GetMapping("/threads/{id}")
-    public String thread(@PathVariable String id, Model model, HttpServletResponse response) {
+    public String thread(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         UUID uuid = UUID.fromString(id);
 
         try {
-            Thread thread = this.threadService.get(uuid);
+            Thread thread = this.threadService.get(uuid, user);
             model.addAttribute("thread", thread);
         } catch (NotFoundException | NotAvailableException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -53,7 +55,7 @@ public class ThreadController {
      * </p>
      */
     @PostMapping("/threads")
-    public String newThread(String title, String content, HttpServletResponse response, HttpSession session) {
+    public String newThread(String title, String content, @RequestParam(name = "tag") List<String> Tags, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -69,10 +71,18 @@ public class ThreadController {
         thread.setTitle(title);
         thread.setEntry(post);
 
+        for (String tag : Tags) {
+            try {
+                thread.addTag(this.tagService.get(tag));
+            } catch (NotFoundException e) {
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                return "redirect:/";
+            }
+        }
+
         post.setThread(thread);
 
         threadService.save(thread);
-        postService.save(post);
 
         return "redirect:/threads/" + thread.getId();
     }
@@ -95,6 +105,7 @@ public class ThreadController {
 
         try {
             Thread thread = this.threadService.get(uuid);
+            // TODO: Move to service
             if (thread.getEntry().getThread().getId().equals(user.getId()) || user.isAdmin()) {
                 thread.setTitle(title);
                 this.threadService.save(thread);

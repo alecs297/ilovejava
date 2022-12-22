@@ -15,8 +15,8 @@ public class Thread {
     @Type(type = "uuid-char")
     private UUID id;
 
-    private boolean locked;
-    private boolean removed;
+    private boolean locked = false;
+    private boolean removed = false;
 
     private String title;
 
@@ -29,7 +29,7 @@ public class Thread {
 
     @ManyToMany
     @JoinColumn(nullable = false)
-    private List<Tag> tags;
+    private List<Tag> tags = new ArrayList<>();
 
 
     public UUID getId() {
@@ -82,6 +82,10 @@ public class Thread {
 
     public List<Tag> getTags() {
         return tags;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
     }
 
     public void setTags(List<Tag> tags) {

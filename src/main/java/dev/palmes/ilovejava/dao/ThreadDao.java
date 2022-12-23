@@ -56,6 +56,8 @@ public interface ThreadDao extends Dao<Thread> {
 
     Integer getNumberOfPages(int size, boolean removed);
 
+    Integer getNumberOfPagesByTag(String tag, int size, boolean removed);
+
     /**
      * Get <em>size</em> threads sorted by creation date excluding deleted threads
      *

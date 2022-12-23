@@ -131,6 +131,33 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
+    public Integer getNumberOfPagesByTag(String tag, int size, boolean removed) {
+        CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
+        Root<Thread> result = query.from(Thread.class);
+        Join<Thread, dev.palmes.ilovejava.model.Tag> tagJoin = result.join("tags");
+        query.select(result).where(
+                builder.and(
+                        builder.equal(tagJoin.get("id"), tag),
+                        builder.or(
+                                builder.equal(result.get("removed"), false),
+                                builder.equal(result.get("removed"), removed)
+
+                        )
+                )
+        );
+
+        // Count the number thread
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+        countQuery.select(builder.count(result));
+
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(countQuery)
+                .getSingleResult().intValue() / size;
+    }
+
+    @Override
     public List<Thread> listByRecent(int page, int size) {
 
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();

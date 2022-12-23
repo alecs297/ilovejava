@@ -6,6 +6,7 @@ import dev.palmes.ilovejava.exceptions.NotAvailableException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Post;
+import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
 import org.springframework.stereotype.Service;
@@ -95,14 +96,14 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
-    public List<Thread> getAllByTag(String tag, int page, int size, boolean removed, User user) throws PermissionLevelException {
+    public List<Thread> getAllByTag(Tag tag, int page, int size, boolean removed, User user) throws PermissionLevelException {
         if (user != null && user.isAdmin()) {
-            return threadDao.getAllByTag(tag, page, size, removed);
+            return threadDao.getAllByTag(tag.getId(), page, size, removed);
         } else if (removed) {
             throw new PermissionLevelException("You don't have permission to see removed threads");
         }
 
-        return threadDao.getAllByTag(tag, page, size, false);
+        return threadDao.getAllByTag(tag.getId(), page, size, false);
     }
 
     @Override
@@ -131,6 +132,17 @@ public class ThreadServiceImp implements ThreadService {
     public Integer getNumberOfPages(int size, boolean removed, User user) throws PermissionLevelException {
         if (user != null && user.isAdmin()) {
             return threadDao.getNumberOfPages(size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+
+        return threadDao.getNumberOfPages(size, false);
+    }
+
+    @Override
+    public Integer getNumberOfPagesByTag(Tag tag, int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && user.isAdmin()) {
+            return threadDao.getNumberOfPagesByTag(tag.getId(), size, removed);
         } else if (removed) {
             throw new PermissionLevelException("You don't have permission to see removed threads");
         }

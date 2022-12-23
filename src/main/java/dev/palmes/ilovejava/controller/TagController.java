@@ -32,13 +32,22 @@ public class TagController {
      * GET - Tag page mapping
      */
     @GetMapping("/tags/{id}")
-    public String tag(@PathVariable("id") String id, Model model, HttpServletRequest request, HttpSession session) {
+    public String tag(@PathVariable("id") String id,
+                      @RequestParam(defaultValue = "0", required = false) int page,
+                      @RequestParam(defaultValue = "10", required = false) int size,
+                      @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed,
+                      Model model,
+                      HttpServletRequest request,
+                      HttpSession session) {
         User user = (User) request.getSession().getAttribute("user");
 
         try {
             Tag tag = tagService.get(id);
-            List<Thread> threads = threadService.getAllByTag(tag.getId(), 0, 10, false, user);
+            List<Thread> threads = threadService.getAllByTag(tag, 0, 10, false, user);
             request.setAttribute("pageTitle", tag.getDisplayName());
+            request.setAttribute("nbPages", threadService.getNumberOfPagesByTag(tag, size, removed, null));
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
             request.setAttribute("threads", threads);
             return "content/explore";
         } catch (NotFoundException e) {

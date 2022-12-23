@@ -4,6 +4,7 @@ import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotAvailableException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
+import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
 
@@ -90,7 +91,7 @@ public interface ThreadService {
      *                If null or not an admin, prevent from getting removed threads
      * @return List of threads
      */
-    List<Thread> getAllByTag(String tag, int page, int size, boolean removed, User user) throws PermissionLevelException;
+    List<Thread> getAllByTag(Tag tag, int page, int size, boolean removed, User user) throws PermissionLevelException;
 
     /**
      * Get all threads that exist
@@ -119,6 +120,8 @@ public interface ThreadService {
     List<Thread> getAllByUser(String username, int page, int size, boolean removed, User user) throws PermissionLevelException;
 
     Integer getNumberOfPages(int size, boolean removed, User user) throws PermissionLevelException;
+
+    Integer getNumberOfPagesByTag(Tag tag, int size, boolean removed, User user) throws PermissionLevelException;
 
     /**
      * Get all threads that exist

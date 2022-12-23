@@ -79,7 +79,7 @@ public class PostController {
 
         postService.save(post);
 
-        return "redirect:/threads/" + parent.getThread().getId();
+        return "redirect:/threads/" + parent.getThread().getId() + "#" + post.getId();
     }
 
     /**

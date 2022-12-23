@@ -183,6 +183,10 @@ public class ThreadDaoImp implements ThreadDao {
         Join<Thread, Post> entryJoin = root.join("entry");
         query.orderBy(cb.desc(cb.size(entryJoin.get("votes"))));
         TypedQuery<Thread> typedQuery = sessionFactory.getCurrentSession().createQuery(query);
-        return typedQuery.getResultList();
+
+        return typedQuery
+                .setFirstResult(page * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 }

@@ -99,6 +99,7 @@ public class TagController {
     public String updateTag(@PathVariable String id,
                             @RequestParam(required = false, defaultValue = "") String name,
                             @RequestParam(required = false, defaultValue = "") String description,
+                            Model model,
                             HttpServletResponse response,
                             HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -107,16 +108,18 @@ public class TagController {
             return "redirect:/login";
         }
 
-        Tag tag = new Tag();
-        tag.setId(id);
-        tag.setDescription(description);
-        tag.setDisplayName(name);
 
         try {
+            Tag tag = tagService.get(id);
+            tag.setDescription(description);
+            tag.setDisplayName(name);
             tagService.update(tag, user);
         } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            return "redirect:/error";
+            return e.getMessage();
+        } catch (NotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return e.getMessage();
         }
 
         return "";

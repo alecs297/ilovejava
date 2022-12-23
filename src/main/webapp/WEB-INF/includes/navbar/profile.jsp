@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="user" scope="session" type="dev.palmes.ilovejava.model.User"/>
 <div id="profile-quick-access" class="w-full px-0 lg:px-3 mb-12 lg:mb-2 text-6xl lg:text-2xl select-none">
     <div class="font-bold truncate">
@@ -9,6 +10,11 @@
 </div>
 <div id="profile-dropdown" class="px-0 lg:hidden text-5xl lg:text-xl lg:py-3">
     <ul class="py-3">
+        <c:if test="${user.admin}">
+            <li class="hover:text-java-pink">
+                <a href="/tags">Tags</a>
+            </li>
+        </c:if>
         <li class="hover:text-java-pink">
             <a href="/profile">Profile</a>
         </li>

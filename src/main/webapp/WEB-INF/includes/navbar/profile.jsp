@@ -1,7 +1,11 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="user" scope="session" type="dev.palmes.ilovejava.model.User"/>
 <div id="profile-quick-access" class="w-full px-0 lg:px-3 mb-12 lg:mb-2 text-6xl lg:text-2xl select-none">
     <div class="font-bold truncate">
         ${user.username}
+        <c:if test="${user.isAdmin()}">
+            <span class="text-java-pink">(A)</span>
+        </c:if>
     </div>
     <div class="border-l-2 border-java-pink pl-2 text-4xl lg:text-xs">
         ${user.points} points

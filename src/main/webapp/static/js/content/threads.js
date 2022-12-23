@@ -64,8 +64,9 @@ async function deletePost(postId) {
     request.open("DELETE", "/posts/" + postId, true);
     request.send(payload);
     request.onreadystatechange = () => {
-        if (request.readyState === 4 && request.status === 200) {
-            window.location.reload();
+        if (request.readyState === 4) {
+            if (request.status === 200) window.location.reload();
+            else alert("An error occurred.")
         }
     }
 }
@@ -93,8 +94,9 @@ async function editPost(postId, content) {
     request.open("PUT", "/posts/" + postId, true);
     request.send(payload);
     request.onreadystatechange = () => {
-        if (request.readyState === 4 && request.status === 200) {
-            window.location.reload();
+        if (request.readyState === 4) {
+            if (request.status === 200) window.location.reload();
+            else alert("An error occurred.")
         }
     }
 }

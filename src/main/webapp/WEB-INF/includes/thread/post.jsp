@@ -10,7 +10,7 @@
             <a href="/users/${post.author.username}">[ ${post.author.username} ] <span
                     class="text-xl lg:text-sm">on ${Moment.moment(post.creationDate).format("dd/MM/YY HH:mm")}</span></a>
         </span>
-        <div class="border-l-2 lg:mb-2">
+        <div class="border-l-4 hover:border-slate-600 lg:border-l-2 pl-1 mb-2 lg:mb-4">
             <div class="content prose prose-2xl lg:prose-base max-w-screen  lg:max-w-screen-2xl bg-slate-100 p-4 py-8 lg:py-4 rounded-br-lg rounded-tr-lg
                 prose-p:text-4xl lg:prose-p:text-base prose-headings:underline prose-headings:decoration-2 prose-headings:decoration-java-blue/80 prose-headings:underline-offset-8 overflow-x-scroll"
                  id="${post.id}">
@@ -19,11 +19,11 @@
             <pre hidden id="source-${post.id}">${post.content}</pre>
             <div class="flex justify-start">
                 <div class="flex">
-                    <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
+                    <button class="text-left text-4xl lg:text-base ml-6 ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
                             id="reply-${post.id}">
                         Reply
                     </button>
-                    <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2 whitespace-nowrap"
+                    <button class="text-left text-4xl lg:text-base ml-6 ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2 whitespace-nowrap"
                             id="vote-${post.id}">
                             ${post.votesCount} - Vote
                     </button>
@@ -31,12 +31,12 @@
                 <div class="flex">
                     <c:if test="${(!post.removed) && (post.author.id == sessionScope.user.id || sessionScope.user.admin)}">
                         <c:if test="${post.author.id == sessionScope.user.id}">
-                            <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
+                            <button class="text-left text-4xl lg:text-base ml-6 ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-blue/80 hover:decoration-2"
                                     id="edit-${post.id}">
                                 Edit
                             </button>
                         </c:if>
-                        <button class="text-left text-4xl lg:text-base ml-2 lg:ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2"
+                        <button class="text-left text-4xl lg:text-base ml-6 ml-4 mt-2 pb-4 text-black/70 underline underline-offset-8 decoration-java-pink/80 hover:decoration-2"
                                 id="remove-${post.id}">
                             Remove
                         </button>

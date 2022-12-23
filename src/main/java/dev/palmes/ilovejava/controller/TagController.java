@@ -38,14 +38,14 @@ public class TagController {
                       @RequestParam(defaultValue = "10", required = false) int size,
                       @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed,
                       Model model,
-                      HttpServletRequest request,
-                      HttpSession session) {
+                      HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
 
         try {
             Tag tag = tagService.get(id);
             List<Thread> threads = threadService.getAllByTag(tag, 0, 10, false, user);
             request.setAttribute("pageTitle", tag.getDisplayName());
+            request.setAttribute("pageSubTitle", tag.getDescription());
             request.setAttribute("nbPages", threadService.getNumberOfPagesByTag(tag, size, removed, null));
             request.setAttribute("currentPage", page);
             request.setAttribute("pageSize", size);
@@ -65,7 +65,7 @@ public class TagController {
      */
     @PostMapping("/tags")
     @ResponseBody
-    public String createTag(String id, String name, String description, Model model, HttpServletResponse response, HttpSession session) {
+    public String createTag(String id, String name, String description, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -99,7 +99,6 @@ public class TagController {
     public String updateTag(@PathVariable String id,
                             @RequestParam(required = false, defaultValue = "") String name,
                             @RequestParam(required = false, defaultValue = "") String description,
-                            Model model,
                             HttpServletResponse response,
                             HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -128,7 +127,7 @@ public class TagController {
      */
     @DeleteMapping("/tags/{id}")
     @ResponseBody
-    public String deleteTag(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
+    public String deleteTag(@PathVariable String id, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

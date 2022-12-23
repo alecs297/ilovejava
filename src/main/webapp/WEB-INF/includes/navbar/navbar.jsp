@@ -1,5 +1,5 @@
 <div class="h-32 lg:h-20"></div>
-<div class="w-screen fixed left-0 right-0 top-0 m-0 border-b-2 border-java-blue bg-background-default p-3 px-8 h-32 lg:h-20">
+<div id="navbar" class="w-screen fixed left-0 right-0 top-0 m-0 border-b-2 border-java-blue bg-background-default p-3 px-8 h-32 lg:h-20">
     <div class=" w-full h-full flex">
         <a href="/" class="h-full flex-none align-middle cursor-pointer align-bottom">
             <img class="aspect-square inline-block h-full"

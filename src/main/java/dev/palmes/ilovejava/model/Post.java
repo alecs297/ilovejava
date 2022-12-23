@@ -26,7 +26,7 @@ public class Post {
     private User author;
 
 
-    @Column(length = MAX_CONTENT_SIZE)
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @CreationTimestamp

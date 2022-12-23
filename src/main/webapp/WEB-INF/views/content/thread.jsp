@@ -22,12 +22,12 @@
         <h1 class="text-7xl lg:text-5xl mt-4 mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
         </h1>
-        <input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="text-xl lg:text-lg">
+            Tagged as
+            <jsp:include page="/WEB-INF/includes/thread/taglist.jsp"/>
+        </div>
         <div class="text-2xl lg:text-base mb-4 lg:mb-2">
             <jsp:include page="/WEB-INF/includes/thread/date-author.jsp"/>
-        </div>
-        <div class="text-4xl lg:text-xl">
-            <jsp:include page="/WEB-INF/includes/thread/taglist.jsp"/>
         </div>
         <div class="my-2 z-0">
             <%
@@ -38,6 +38,7 @@
             <jsp:include page="/WEB-INF/includes/thread/post.jsp"/>
         </div>
     </div>
+    <input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/static/js/content/threads.js"></script>

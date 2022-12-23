@@ -15,8 +15,6 @@ public class Tag {
 
     private String description;
 
-    private Boolean locked = false;
-
     public String getId() {
         return id;
     }

@@ -15,7 +15,9 @@ public class Thread {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean locked = false;
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean removed = false;
 
     private String title;

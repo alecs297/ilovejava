@@ -37,6 +37,7 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
 
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean removed = false;
 
     @ManyToOne

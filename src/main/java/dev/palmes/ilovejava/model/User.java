@@ -27,6 +27,7 @@ public class User {
 
     private String password;
 
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean admin = false;
 
     private Integer points = 0;

@@ -38,6 +38,18 @@ document.querySelectorAll("[id^='reply-']").forEach(button => {
     })
 })
 
+document.querySelectorAll("[id^='rm-thread-']").forEach(button => {
+    button.addEventListener("click", async () => {
+        await deleteThread(button.id.slice("rm-thread-".length))
+    })
+})
+
+document.querySelectorAll("[id^='lock-thread-']").forEach(button => {
+    button.addEventListener("click", async () => {
+        await lockThread(button.id.slice("lock-thread-".length))
+    })
+})
+
 document.querySelectorAll("[id^='remove-']").forEach(button => {
     button.addEventListener("click", async () => {
         await deletePost(button.id.slice("remove-".length))
@@ -46,7 +58,7 @@ document.querySelectorAll("[id^='remove-']").forEach(button => {
 
 document.querySelectorAll("[id^='edit-']").forEach(button => {
     button.addEventListener("click", async (e) => {
-        showEditBox(e.target , button.id.slice("edit-".length))
+        showEditBox(e.target, button.id.slice("edit-".length))
     })
 })
 
@@ -55,6 +67,36 @@ document.querySelectorAll("[id^='vote-']").forEach(button => {
         await vote(e.target, button.id.slice("vote-".length))
     })
 })
+
+async function deleteThread(threadId) {
+    if (!confirm("Are you sure you want to delete this thread?")) return
+    let request = new XMLHttpRequest();
+    let payload = new FormData();
+    payload.append(csrf.name, csrf.value);
+    request.open("DELETE", "/threads/" + threadId, true);
+    request.send(payload);
+    request.onreadystatechange = () => {
+        if (request.readyState === 4) {
+            if (request.status === 200) window.location.reload();
+            else alert("An error occurred.")
+        }
+    }
+}
+
+async function lockThread(threadId) {
+    if (!confirm("Are you sure you want to delete this thread?")) return
+    let request = new XMLHttpRequest();
+    let payload = new FormData();
+    payload.append(csrf.name, csrf.value);
+    request.open("POST", "/threads/" + threadId + "/lock", true);
+    request.send(payload);
+    request.onreadystatechange = () => {
+        if (request.readyState === 4) {
+            if (request.status === 200) window.location.reload();
+            else alert("An error occurred.")
+        }
+    }
+}
 
 async function deletePost(postId) {
     if (!confirm("Are you sure you want to delete this post?")) return

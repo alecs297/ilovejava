@@ -81,6 +81,15 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
+    public void lock(Thread thread, User user) throws PermissionLevelException {
+        if (!user.isAdmin() && !user.equals(thread.getEntry().getAuthor())) {
+            throw new PermissionLevelException("You don't have the permission to lock this thread");
+        }
+        thread.setLocked(true);
+        threadDao.update(thread);
+    }
+
+    @Override
     public List<Thread> getAll(int page, int size) {
         return threadDao.getAll(page, size);
     }

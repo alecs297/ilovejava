@@ -77,7 +77,13 @@ public class PostController {
         post.setParent(parent);
         post.setThread(parent.getThread());
 
-        postService.save(post);
+        try {
+            postService.save(post);
+        } catch (PermissionLevelException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/posts/" + id;
+        }
 
         return "redirect:/threads/" + parent.getThread().getId() + "#" + post.getId();
     }

@@ -5,7 +5,9 @@
     <a class="font-bold inline-block"
        href="/threads/${thread.id}"><span
             class="text-slate-600 text-sm">${thread.entry.votesCount}</span> - ${thread.title} <c:if
-            test="${thread.removed == true}"><span class="text-slate-600">- Removed</span></c:if></a>
+            test="${thread.removed || thread.locked}"> <span class="text-slate-600">-<c:if
+            test="${thread.removed}"> Removed</c:if><c:if
+            test="${thread.locked}"> locked</c:if></span></c:if></a>
     <jsp:include page="date-author.jsp"/>
     <a class="w-full my-2 block text-slate-600" href="/threads/${thread.id}">${thread.entry.getContentSummary(200)}</a>
 </div>

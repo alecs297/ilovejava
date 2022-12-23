@@ -24,6 +24,9 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     public User get(UUID id) throws NotFoundException {
+        if (id == null) {
+            throw new NotFoundException();
+        }
         return userDao.get(id).orElseThrow(NotFoundException::new);
     }
 

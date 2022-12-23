@@ -4,6 +4,7 @@
 <%@ page import="dev.palmes.ilovejava.model.Post" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/includes/head.jsp"/>
@@ -19,9 +20,24 @@
                 Removed
             </h2>
         </c:if>
+        <c:if test="${thread.locked}">
+            <h2 class="text-6xl lg:text-4xl mt-4 lg:mb-2 font-bold text-java-pink break-keep block">
+                Locked
+            </h2>
+        </c:if>
         <h1 class="text-7xl lg:text-5xl mt-4 mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
         </h1>
+        <c:if test="${user != null && (user.admin || user.id == thread.entry.author.id)}">
+            <button class="text-slate-600 lg:text-sm hover:underline decoration-java-blue/80"
+                    id="rm-thread-${thread.id}">Remove
+            </button>
+            <c:if test="${user.admin}">
+                <button class="text-slate-600 lg:text-sm hover:underline decoration-java-blue/80"
+                        id="lock-thread-${thread.id}">Lock
+                </button>
+            </c:if>
+        </c:if>
         <div class="text-xl lg:text-lg">
             Tagged as
             <jsp:include page="/WEB-INF/includes/thread/taglist.jsp"/>

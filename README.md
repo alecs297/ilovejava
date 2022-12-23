@@ -37,3 +37,23 @@ then launch the css building script
 ```shell
 npm run build:postcss
 ```
+
+## Demo setup
+
+Default password for demo users is `Secure@password1234`
+
+Some users are already created in the database, you can use them to login.
+
+```
+pierre.dupont@gmail.com
+marie.martin@gmail.com
+jacques.leblanc@gmail.com
+chloe.durand@gmail.com
+antoine.moreau@gmail.com
+sophie.roy@gmail.com
+etienne.duval@gmail.com
+eva.lefevre@gmail.com
+nathan.dubois@gmail.com
+
+mod@palmes.dev (moderator)
+```

@@ -31,7 +31,13 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public void save(Post post) {
+    public void save(Post post) throws PermissionLevelException {
+        if (post.getThread().isLocked()) {
+            throw new PermissionLevelException("Thread is locked");
+        }
+        if (post.getThread().isRemoved()) {
+            throw new PermissionLevelException("Thread is removed");
+        }
         post.setContent(HtmlUtils.htmlEscape(post.getContent()));
         postDao.save(post);
     }

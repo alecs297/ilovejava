@@ -60,6 +60,9 @@ public interface ThreadService {
      */
     void update(Thread thread, User user) throws PermissionLevelException;
 
+    void lock(Thread thread, User user) throws PermissionLevelException;
+    
+
     /**
      * Get all threads that exist
      *
@@ -127,4 +130,5 @@ public interface ThreadService {
      * @return List of threads
      */
     List<Thread> listByTop(int page, int size);
+
 }

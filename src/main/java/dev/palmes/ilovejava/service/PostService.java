@@ -26,7 +26,7 @@ public interface PostService {
      *
      * @param post The post to create
      */
-    void save(Post post);
+    void save(Post post) throws PermissionLevelException;
 
     /**
      * Mark a thread a deleted, the user performing the

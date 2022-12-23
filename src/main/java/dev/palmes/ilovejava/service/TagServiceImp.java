@@ -11,15 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class TagServiceImp implements TagService {
 
     private final TagDao tagDao;
-
-    private final String regex = "[a-z\\d]+";
 
 
     public TagServiceImp(TagDao tagDao) {
@@ -40,10 +36,8 @@ public class TagServiceImp implements TagService {
             throw new AlreadyExistException("Tag with same id already exists");
         }
 
-        final Pattern pattern = Pattern.compile(this.regex);
-        final Matcher matcher = pattern.matcher(tag.getId());
-
-        if (!matcher.find()) {
+        final String regex = "[a-z\\d]+";
+        if (!tag.getId().matches(regex)) {
             throw new InvalidFormatException("Tag id must be alphanumeric and lowercase");
         }
 
@@ -62,7 +56,7 @@ public class TagServiceImp implements TagService {
     @Override
     public void update(Tag tag, User user) throws PermissionLevelException {
         if (!user.isAdmin()) {
-            throw new PermissionLevelException();
+            throw new PermissionLevelException("User is not an admin");
         }
         tag.setDisplayName(HtmlUtils.htmlEscape(tag.getDisplayName()));
         tagDao.update(tag);

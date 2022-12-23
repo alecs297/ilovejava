@@ -145,26 +145,54 @@ public class ThreadController {
      * </p>
      */
     @DeleteMapping("/threads/{id}")
-    public String deleteThread(Thread thread, Model model, HttpServletResponse response, HttpSession session) {
+    @ResponseBody
+    public String deleteThread(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "Unauthorized";
+        }
+        try {
+            threadService.delete(threadService.get(UUID.fromString(id), user), user);
+        } catch (PermissionLevelException e) {
+            model.addAttribute("error", e.getMessage());
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return e.getMessage();
+        } catch (NotFoundException | NotAvailableException e) {
+            model.addAttribute("error", e.getMessage());
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return e.getMessage();
+        }
+
+        return "";
+    }
+
+    /**
+     * POST - Lock a Thread
+     */
+    @PostMapping("/threads/{id}/lock")
+    public String lockThread(@PathVariable String id, Model model, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "redirect:/login";
         }
-        if (thread == null) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return "errors/notAvailable";
-        }
+
+        UUID uuid = UUID.fromString(id);
+
         try {
-            threadService.delete(thread, user);
-        } catch (PermissionLevelException e) {
+            Thread thread = this.threadService.get(uuid, user);
+            this.threadService.lock(thread, user);
+        } catch (NotFoundException | NotAvailableException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             model.addAttribute("error", e.getMessage());
+            return "errors/notAvailable";
+        } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
+            model.addAttribute("error", e.getMessage());
             return "errors/notPermitted";
         }
 
-        return "redirect:/explore";
+        return "redirect:/threads/" + id;
     }
-
-
 }

@@ -83,7 +83,6 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Thread> getAllByUser(User user, int page, int size, boolean removed) {
 
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
@@ -108,18 +107,6 @@ public class ThreadDaoImp implements ThreadDao {
                 .setFirstResult(page * size)
                 .setMaxResults(size)
                 .getResultList();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Thread> getAllByUser(String username, int page, int size, boolean removed) {
-        return sessionFactory.getCurrentSession()
-                .createQuery("from Thread where entry.author.id = :username and removed = false and removed = :removed")
-                .setParameter("username", username)
-                .setParameter("removed", removed)
-                .setFirstResult(page * size)
-                .setMaxResults(size)
-                .list();
     }
 
     @Override

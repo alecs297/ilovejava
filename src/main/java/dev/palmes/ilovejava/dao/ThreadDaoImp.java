@@ -111,18 +111,6 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Thread> getAllByUser(String username, int page, int size, boolean removed) {
-        return sessionFactory.getCurrentSession()
-                .createQuery("from Thread where entry.author.id = :username and removed = false and removed = :removed")
-                .setParameter("username", username)
-                .setParameter("removed", removed)
-                .setFirstResult(page * size)
-                .setMaxResults(size)
-                .list();
-    }
-
-    @Override
     public Integer getNumberOfPages(int size, boolean removed) {
         return ((Long) sessionFactory.getCurrentSession()
                 .createQuery("select count(*) from Thread where removed = false or removed = :removed")

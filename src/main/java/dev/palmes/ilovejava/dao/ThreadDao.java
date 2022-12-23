@@ -43,17 +43,6 @@ public interface ThreadDao extends Dao<Thread> {
      */
     List<Thread> getAllByUser(User user, int page, int size, boolean removed);
 
-    /**
-     * Get <em>size</em> threads from user
-     *
-     * @param username Username
-     * @param page     Page number
-     * @param size     Number of threads per page
-     * @param removed  If true, include removed threads
-     * @return List of threads from user
-     */
-    List<Thread> getAllByUser(String username, int page, int size, boolean removed);
-
     Integer getNumberOfPages(int size, boolean removed);
 
     Integer getNumberOfPagesByTag(String tag, int size, boolean removed);

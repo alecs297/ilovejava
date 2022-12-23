@@ -19,6 +19,9 @@
             </li>
         </c:if>
         <li class="hover:text-java-pink">
+            <a href="/new">New Thread</a>
+        </li>
+        <li class="hover:text-java-pink">
             <a href="/profile">Profile</a>
         </li>
         <li class="hover:text-java-pink">

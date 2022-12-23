@@ -5,6 +5,12 @@ const md = window.markdownit({
     breaks: true
 });
 
+// fix for weird trimming
+window.Prism.hooks.add("before-highlight", function (env) {
+    env.code = env.element.innerText;
+});
+
+
 function unescape(str) {
     return str.replaceAll('&amp;', '&')
         .replaceAll('&lt;', "<")

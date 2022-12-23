@@ -40,6 +40,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/static/js/threads.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/content/threads.js"></script>
 </body>
 </html>

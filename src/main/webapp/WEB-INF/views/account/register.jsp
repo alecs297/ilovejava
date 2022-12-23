@@ -41,8 +41,8 @@
                 class="text-java-pink cursor-pointer underline">Help me</span></p>
     </form>
 </div>
-<script src="${pageContext.request.contextPath}/static/js/smtp.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/usernamecheck.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/account/smtp.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/account/usernamecheck.js"></script>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 </body>
 </html>

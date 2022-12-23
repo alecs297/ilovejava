@@ -44,6 +44,6 @@
 
         </div>
         <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-        <script src="/static/js/tags.js"></script>
+        <script src="/static/js/content/tags.js"></script>
     </body>
 </html>

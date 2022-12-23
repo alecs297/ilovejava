@@ -24,7 +24,7 @@
                 !</label>
             <div class="text-5xl lg:text-2xl my-8 lg:my-4 text-java-blue">
                 <h2 class="text-5xl lg:text-2xl text-black">Choose some tags</h2>
-                <jsp:include page="fetch_tags.jsp"/>
+                <jsp:include page="../../includes/thread/fetch_tags.jsp"/>
             </div>
             <div class="text-5xl lg:text-3xl">
                 <label class="inline-block align-middle w-24 lg:w-12 border-2 rounded-3xl cursor-pointer inline-flex items-center mb-3">
@@ -41,6 +41,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/static/js/new.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/content/new.js"></script>
 </body>
 </html>

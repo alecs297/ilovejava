@@ -25,7 +25,7 @@
                 class="text-java-pink cursor-pointer underline">password forgotten</span> ?</p>
     </form>
 </div>
-<script src="${pageContext.request.contextPath}/static/js/smtp.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/account/smtp.js"></script>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 </body>
 </html>

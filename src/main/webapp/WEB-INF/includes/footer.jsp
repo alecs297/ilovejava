@@ -13,7 +13,7 @@
     </div>
 </footer>
 <script src="/static/js/navbar.js"></script>
-<script src="/static/js/areahelper.js"></script>
+<script src="/static/js/content/areahelper.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>

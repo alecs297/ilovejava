@@ -123,6 +123,14 @@ public class ThreadDaoImp implements ThreadDao {
     }
 
     @Override
+    public Integer getNumberOfPages(int size, boolean removed) {
+        return ((Long) sessionFactory.getCurrentSession()
+                .createQuery("select count(*) from Thread where removed = false or removed = :removed")
+                .setParameter("removed", removed)
+                .uniqueResult()).intValue() / size;
+    }
+
+    @Override
     public List<Thread> listByRecent(int page, int size) {
 
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
@@ -132,7 +140,7 @@ public class ThreadDaoImp implements ThreadDao {
         Join<Thread, Post> children = root.join("entry", JoinType.INNER);
 
         query.where(builder.equal(root.get("removed"), false));
-        query.orderBy(builder.asc(children.get("creationDate")));
+        query.orderBy(builder.desc(children.get("creationDate")));
 
         return sessionFactory.getCurrentSession().createQuery(query)
                 .setFirstResult(page * size)

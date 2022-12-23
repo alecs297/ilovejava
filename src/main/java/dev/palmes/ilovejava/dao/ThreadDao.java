@@ -54,6 +54,7 @@ public interface ThreadDao extends Dao<Thread> {
      */
     List<Thread> getAllByUser(String username, int page, int size, boolean removed);
 
+    Integer getNumberOfPages(int size, boolean removed);
 
     /**
      * Get <em>size</em> threads sorted by creation date excluding deleted threads

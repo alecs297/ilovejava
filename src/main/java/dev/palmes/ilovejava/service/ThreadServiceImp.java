@@ -128,6 +128,17 @@ public class ThreadServiceImp implements ThreadService {
     }
 
     @Override
+    public Integer getNumberOfPages(int size, boolean removed, User user) throws PermissionLevelException {
+        if (user != null && user.isAdmin()) {
+            return threadDao.getNumberOfPages(size, removed);
+        } else if (removed) {
+            throw new PermissionLevelException("You don't have permission to see removed threads");
+        }
+
+        return threadDao.getNumberOfPages(size, false);
+    }
+
+    @Override
     public List<Thread> listByRecent(int page, int size) {
         return threadDao.listByRecent(page, size);
     }

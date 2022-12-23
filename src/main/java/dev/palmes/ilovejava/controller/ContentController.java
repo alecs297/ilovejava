@@ -1,5 +1,6 @@
 package dev.palmes.ilovejava.controller;
 
+import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
 import dev.palmes.ilovejava.model.Thread;
 import dev.palmes.ilovejava.model.User;
@@ -40,13 +41,23 @@ public class ContentController {
      * </p>
      */
     @GetMapping("/explore")
-    public String explore(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed, HttpServletRequest request) {
+    public String explore(@RequestParam(defaultValue = "0", required = false) int page,
+                          @RequestParam(defaultValue = "10", required = false) int size,
+                          @RequestParam(name = "removed", required = false, defaultValue = "false") boolean removed,
+                          HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
 
+
         try {
-            List<Thread> threads = threadService.getAll(page, 10, removed, user);
+            List<Thread> threads = threadService.getAll(page, size, removed, user);
+            request.setAttribute("nbPages", threadService.getNumberOfPages(size, removed, null));
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
             request.setAttribute("pageTitle", "Explore");
             request.setAttribute("threads", threads);
+        } catch (PermissionLevelException e) {
+            request.setAttribute("error", e.getMessage());
+            return "errors/notPermitted";
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             return "errors/notAvailable";
@@ -62,9 +73,21 @@ public class ContentController {
      * </p>
      */
     @GetMapping("/top")
-    public String trending(HttpServletRequest request) {
-        List<Thread> threads = threadService.listByTop(0, 10);
+    public String trending(@RequestParam(defaultValue = "0", required = false) int page,
+                           @RequestParam(defaultValue = "10", required = false) int size,
+                           HttpServletRequest request) {
+        List<Thread> threads = threadService.listByTop(page, size);
 
+        try {
+            request.setAttribute("nbPages", threadService.getNumberOfPages(size, false, null));
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
+            request.setAttribute("pageTitle", "Explore");
+            request.setAttribute("threads", threads);
+        } catch (PermissionLevelException e) {
+            request.setAttribute("error", e.getMessage());
+            return "errors/notPermitted";
+        }
         request.setAttribute("pageTitle", "Top");
         request.setAttribute("threads", threads);
         return "content/explore";
@@ -77,9 +100,21 @@ public class ContentController {
      * </p>
      */
     @GetMapping("/recent")
-    public String recent(HttpServletRequest request) {
-        List<Thread> threads = threadService.listByRecent(0, 10);
+    public String recent(@RequestParam(defaultValue = "0", required = false) int page,
+                         @RequestParam(defaultValue = "10", required = false) int size,
+                         HttpServletRequest request) {
+        List<Thread> threads = threadService.listByRecent(page, size);
 
+        try {
+            request.setAttribute("nbPages", threadService.getNumberOfPages(size, false, null));
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
+            request.setAttribute("pageTitle", "Explore");
+            request.setAttribute("threads", threads);
+        } catch (PermissionLevelException e) {
+            request.setAttribute("error", e.getMessage());
+            return "errors/notPermitted";
+        }
         request.setAttribute("pageTitle", "Recent");
         request.setAttribute("threads", threads);
         return "content/explore";

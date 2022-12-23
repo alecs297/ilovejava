@@ -118,6 +118,8 @@ public interface ThreadService {
      */
     List<Thread> getAllByUser(String username, int page, int size, boolean removed, User user) throws PermissionLevelException;
 
+    Integer getNumberOfPages(int size, boolean removed, User user) throws PermissionLevelException;
+
     /**
      * Get all threads that exist
      *

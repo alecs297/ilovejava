@@ -16,7 +16,6 @@
                     class="text-4xl lg:text-2xl mt-4 lg:mb-8 font-bold ">
                 Posts</h2></a>
         </div>
-
         <jsp:include page="/WEB-INF/includes/thread/thread_list.jsp"/>
     </div>
 </div>

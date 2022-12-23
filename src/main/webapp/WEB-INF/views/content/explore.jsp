@@ -15,6 +15,7 @@
         <jsp:include page="/WEB-INF/includes/thread/thread_list.jsp"/>
     </div>
 </div>
+<jsp:include page="/WEB-INF/includes/thread/page_list.jsp"/>
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>
 </body>
 </html>

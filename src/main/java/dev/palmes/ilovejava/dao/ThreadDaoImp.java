@@ -88,7 +88,7 @@ public class ThreadDaoImp implements ThreadDao {
         CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Thread> query = builder.createQuery(Thread.class);
         Root<Thread> result = query.from(Thread.class);
-        Join<Thread, Post> postJoin = result.join("posts", JoinType.INNER);
+        Join<Thread, Post> postJoin = result.join("entry", JoinType.INNER);
 
         query.select(result).where(
                 builder.and(

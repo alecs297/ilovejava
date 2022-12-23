@@ -211,7 +211,7 @@ public class UserController {
         User currentUser = (User) session.getAttribute("user");
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            model.addAttribute("viewUser", user.get().getSafeUser());
+            model.addAttribute("viewUser", user.get());
             try {
                 model.addAttribute("pageTitle", user.get().getUsername());
                 model.addAttribute("threads", threadService.getAllByUser(user.get(), 0, 10, removed, currentUser));
@@ -246,7 +246,7 @@ public class UserController {
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
             model.addAttribute("pageTitle", user.get().getUsername());
-            model.addAttribute("viewUser", user.get().getSafeUser());
+            model.addAttribute("viewUser", user.get());
             model.addAttribute("posts", postService.getAllByUser(user.get()));
 
             return "content/user_posts";

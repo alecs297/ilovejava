@@ -2,6 +2,7 @@ package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.dao.TagDao;
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
@@ -10,11 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TagServiceImp implements TagService {
 
     private final TagDao tagDao;
+
+    private final String regex = "[a-z\\d]+";
+
 
     public TagServiceImp(TagDao tagDao) {
         this.tagDao = tagDao;
@@ -26,13 +32,21 @@ public class TagServiceImp implements TagService {
     }
 
     @Override
-    public void save(Tag tag, User user) throws AlreadyExistException, PermissionLevelException {
+    public void save(Tag tag, User user) throws AlreadyExistException, PermissionLevelException, InvalidFormatException {
         if (!user.isAdmin()) {
             throw new PermissionLevelException();
         }
         if (tagDao.get(tag.getId()).isPresent()) {
             throw new AlreadyExistException("Tag with same id already exists");
         }
+
+        final Pattern pattern = Pattern.compile(this.regex);
+        final Matcher matcher = pattern.matcher(tag.getId());
+
+        if (!matcher.find()) {
+            throw new InvalidFormatException("Tag id must be alphanumeric and lowercase");
+        }
+
         tag.setDisplayName(HtmlUtils.htmlEscape(tag.getDisplayName()));
         tagDao.save(tag);
     }

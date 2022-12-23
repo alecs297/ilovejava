@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.controller;
 
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
@@ -79,13 +80,14 @@ public class TagController {
         try {
             tagService.save(tag, user);
 
-        } catch (AlreadyExistException e) {
+        } catch (AlreadyExistException | InvalidFormatException e) {
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
             return e.getMessage();
         } catch (PermissionLevelException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return "redirect:/error";
         }
+
         return "";
     }
 

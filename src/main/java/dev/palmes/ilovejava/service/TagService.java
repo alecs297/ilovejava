@@ -1,6 +1,7 @@
 package dev.palmes.ilovejava.service;
 
 import dev.palmes.ilovejava.exceptions.AlreadyExistException;
+import dev.palmes.ilovejava.exceptions.InvalidFormatException;
 import dev.palmes.ilovejava.exceptions.NotFoundException;
 import dev.palmes.ilovejava.exceptions.PermissionLevelException;
 import dev.palmes.ilovejava.model.Tag;
@@ -24,10 +25,10 @@ public interface TagService {
      *
      * @param tag  The tag tag to create
      * @param user User requesting to create a tag
-     * @throws AlreadyExistException Tag with same id exists
+     * @throws AlreadyExistException    Tag with same id exists
      * @throws PermissionLevelException User is not an admin
      */
-    void save(Tag tag, User user) throws AlreadyExistException, PermissionLevelException;
+    void save(Tag tag, User user) throws AlreadyExistException, PermissionLevelException, InvalidFormatException;
 
     /**
      * Delete a tag from the database, the user performing

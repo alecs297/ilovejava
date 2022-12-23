@@ -48,7 +48,7 @@ public class TagDaoImp implements TagDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Tag> getPublicTags(int page, int size) {
-        return sessionFactory.getCurrentSession().createQuery("from Tag where locked = false")
+        return sessionFactory.getCurrentSession().createQuery("from Tag")
                 .setFirstResult(page * size)
                 .setMaxResults(size)
                 .list();

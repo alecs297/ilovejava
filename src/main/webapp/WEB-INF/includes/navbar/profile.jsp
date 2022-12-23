@@ -13,6 +13,11 @@
 </div>
 <div id="profile-dropdown" class="px-0 lg:hidden text-5xl lg:text-xl lg:py-3">
     <ul class="py-3">
+        <c:if test="${user.admin}">
+            <li class="hover:text-java-pink">
+                <a href="/tags">Tags</a>
+            </li>
+        </c:if>
         <li class="hover:text-java-pink">
             <a href="/profile">Profile</a>
         </li>

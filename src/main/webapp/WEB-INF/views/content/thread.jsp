@@ -25,15 +25,15 @@
                 Locked
             </h2>
         </c:if>
-        <h1 class="text-7xl lg:text-5xl mt-4 mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
+        <h1 class="text-8xl lg:text-5xl mt-4 mb-2 font-bold underline underline-offset-4 decoration-4 decoration-java-pink/80 break-keep block">
             <%=thread.getTitle()%>
         </h1>
         <c:if test="${user != null && (user.admin || user.id == thread.entry.author.id)}">
-            <button class="text-slate-600 lg:text-sm hover:underline decoration-java-blue/80"
+            <button class="text-slate-600 text-5xl mb-4 lg:mb-0 lg:text-sm hover:underline decoration-java-blue/80"
                     id="rm-thread-${thread.id}">Remove
             </button>
             <c:if test="${user.admin}">
-                <button class="text-slate-600 lg:text-sm hover:underline decoration-java-blue/80"
+                <button class="text-slate-600 text-5xl lg:text-sm hover:underline decoration-java-blue/80"
                         id="lock-thread-${thread.id}">Lock
                 </button>
             </c:if>
